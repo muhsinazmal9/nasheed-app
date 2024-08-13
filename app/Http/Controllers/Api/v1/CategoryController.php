@@ -9,6 +9,13 @@ class CategoryController extends Controller
 {
     public function index()
     {
-        return response()->json(Category::all());
+        return response()->json(
+            [
+                'success' => true,
+                'message' => 'Categories retrieved successfully.',
+                'status' => 200,
+                'data' => Category::select('id', 'title', 'slug', 'description')->get()
+            ]
+        );
     }
 }
