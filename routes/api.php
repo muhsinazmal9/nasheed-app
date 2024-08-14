@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\V1\LoginController;
+use App\Http\Controllers\Api\V1\AuthController;
 use App\Http\Controllers\Api\V1\DedicationController;
 
 
@@ -9,9 +9,13 @@ use App\Http\Controllers\Api\V1\DedicationController;
 
 
 // Authentication related APIs (Public)
-Route::post('/login', [LoginController::class, 'login']);
+Route::post('/login', [AuthController::class, 'login'])->name('login');
+Route::post('/register', [AuthController::class, 'register'])->name('register');
 
-
+// Authentication related APIs (Private)
+Route::middleware('auth:sanctum')->group(function () {
+   Route::post('/logout', [AuthController::class, 'logout']); 
+});
 
 // Public APIs
 Route::get('/dedications', [DedicationController::class, 'index']);
