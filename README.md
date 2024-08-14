@@ -19,7 +19,7 @@ Before you begin, ensure you have met the following requirements:
    Clone this repository to your local machine using:
 
    ```bash
-   git clone https://github.com/your-username/nasheed-app-backend.git
+   git clone https://github.com/muhsinazmal9/nasheed-app.git
    ```
 
 2. **Navigate to the Project Directory**
