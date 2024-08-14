@@ -1,11 +1,21 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\V1\LoginController;
+use App\Http\Controllers\Api\V1\DedicationController;
 
-// Route::get('/user', function (Request $request) {
-//     return $request->user();
-// })->middleware('auth:sanctum');
 
-Route::get('categories', [\App\Http\Controllers\Api\v1\CategoryController::class, 'index']);
+
+
+
+// Authentication related APIs (Public)
+Route::post('/login', [LoginController::class, 'login']);
+
+
+
+// Public APIs
+Route::get('/dedications', [DedicationController::class, 'index']);
+
+
+
 
