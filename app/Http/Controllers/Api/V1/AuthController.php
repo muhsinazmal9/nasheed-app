@@ -15,10 +15,6 @@ class AuthController extends Controller
 {
     public function login(LoginRequest $request): JsonResponse
     {
-        if (Auth::guard('sanctum')->check()) {
-            return error('Already logged in', [], 401);
-        }
-
         $credentials = $request->validated();
 
         if (!Auth::attempt($credentials)) {
@@ -61,15 +57,14 @@ class AuthController extends Controller
 
     public function logout(Request $request): JsonResponse
     {
-        return error('Not implemented');
-        // if (!Auth::guard('sanctum')->check()) {
-        //     return error('Not logged in', [], 401);
-        // }
+        if (!Auth::guard('sanctum')->check()) {
+            return error('Not logged in', [], 401);
+        }
 
-        // $token = $request->user()->currentAccessToken();
+        $token = $request->user()->currentAccessToken();
 
-        // $token->delete();
+        $token->delete();
 
-        // return success('Logout successful');
+        return success('Logout successful');
     }
 }
