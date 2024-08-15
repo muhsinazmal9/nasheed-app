@@ -26,7 +26,15 @@ class RegisterRequest extends FormRequest
         return [
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:8',
+            // Password must be at least 8 characters long, contain at least one uppercase letter,
+            // one lowercase letter, one number, and one special character.
+            'password' => [
+                'required',
+                'string',
+                'min:8',
+                'confirmed',
+                'regex:/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/'
+            ],
             'password_confirmation' => 'required|same:password',
         ];
     }
