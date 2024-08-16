@@ -1,70 +1,7 @@
-{{-- <x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Dashboard') }}
-        </h2>
-    </x-slot>
-
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900">
-                    {{ __("You're logged in!") }}
-                </div>
-            </div>
-        </div>
-    </div>
-</x-app-layout> --}}
-
-
-
 <!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <!--
-
-
-
-
-
-
-
-
-
-
-
-    THIS IS THE DEMO VERSION OF OneUI FRAMEWORK!
-    COMMENTS ARE REMOVED, CODE IS COMPRESSED AND CODE STYLE IS ALTERED!
-
-    IN THE FULL VERSION
-        THE CODE IS INDENTED CORRECTLY AND WELL COMMENTED
-        YOU GET AN EXTENSIVE DOCUMENTATION TO GET YOU STARTED
-        YOU GET THE PURE VUE.JS 3 VERSION
-        YOU GET THE PHP VERSION (ALONG WITH THE HTML VERSION) WHICH HAS EXTRA FEATURES
-        YOU GET THE LARAVEL 11 STARTER KIT TO HELP YOU BUILD YOUR WEB APP WITH LARAVEL
-        YOU GET THE ES6 FILES OF THE UI FRAMEWORK
-        YOU GET THE SASS FILES OF THE UI FRAMEWORK
-        YOU GET A GULPFILE WITH LOTS OF AUTOMATIONS
-        YOU GET ACCESS TO FRAMEWORK UPDATES WITH NEW FEATURES AND PLUGIN UPGRADES
-        WE CAN PROVIDE SUPPORT IF YOU NEED IT :-)
-    
-    THANK YOU FOR HAVING A LOOK!
-    
-    ** A LICENSE MUST BE ACQUIRED FOR LEGAL USE -> LINK: https://pixelcave.com/products/oneui **
-    ** PLEASE SUPPORT US IF YOU LIKE OUR WORK, IT HELPS US CONTINUE, THANK YOU VERY MUCH! **
-
-
-
-
-
-
-
-
-
-
-
-  -->
   <meta name="viewport" content="width=device-width,initial-scale=1.0">
   <title>OneUI - Bootstrap 5 Admin Template &amp; UI Framework | DEMO</title>
   <meta name="description" content="OneUI - Bootstrap 5 Admin Template &amp; UI Framework created by pixelcave | This is the demo of OneUI! You need to purchase a license for legal use! | DEMO">
@@ -1782,6 +1719,7 @@
     </div>
   </div>
 </header>
+
   <main id="main-container">
 <div class="content">
   <div class="d-flex flex-column flex-md-row justify-content-md-between align-items-md-center py-2 text-center text-md-start">
@@ -2275,6 +2213,8 @@
   </div>
 </div>
   </main>
+
+
   <footer id="page-footer" class="bg-body-light">
   <div class="content py-3">
     <div class="row fs-sm">
