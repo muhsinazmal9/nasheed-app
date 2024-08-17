@@ -1,10 +1,10 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ArtistController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\HomeController;
-use App\Http\Controllers\lyricists;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\LyricistController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -17,15 +17,19 @@ Route::middleware('auth')->group(function () {
 });
 
 
-Route::middleware('auth', 'verified')->group(function(){
+Route::middleware(['auth', 'verified'])->group(function(){
 
     Route::controller(HomeController::class)->group(function(){
         Route::get('/dashboard',  'dashboard')->name('dashboard');
     });
 
     Route::resource('/artists', ArtistController::class);
-    Route::resource('/lyricists', lyricists::class);
+
+
+
+
     Route::post('/lyricistStatus/{id}', [HomeController::class, 'lyricistStatus'])->name('lyricistStatus');
+    Route::resource('/lyricists', LyricistController::class);
 });
 
 

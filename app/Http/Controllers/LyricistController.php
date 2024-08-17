@@ -6,7 +6,7 @@ use App\Models\lyricist;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
-class lyricists extends Controller
+class LyricistController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,7 +16,7 @@ class lyricists extends Controller
 
         $lyricists = lyricist::all();
         return view('backend.lyricists.lyricists', [
-            'lyricists'=>$lyricists,
+            'lyricists' => $lyricists,
         ]);
     }
 
@@ -34,8 +34,8 @@ class lyricists extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name'=>'required',
-            'description'=>'required',
+            'name' => 'required',
+            'description' => 'required',
             // 'image'=>'required|image',
         ]);
 
@@ -44,14 +44,14 @@ class lyricists extends Controller
         // check username availability
         $i = 1;
         while (lyricist::where('slug', $request['slug'])->exists()) {
-            $request['slug'] = Str::slug($request->name).'-'.$i;
+            $request['slug'] = Str::slug($request->name) . '-' . $i;
             $i++;
         }
 
         lyricist::create([
-            'name'=>$request->name,
-            'description'=>$request->description,
-            'slug'=>$request->slug,
+            'name' => $request->name,
+            'description' => $request->description,
+            'slug' => $request->slug,
         ]);
         return back()->with('success', 'lyricists Created Successfully');
     }
@@ -86,8 +86,8 @@ class lyricists extends Controller
     public function destroy(string $id)
     {
         lyricist::find($id)->delete();
-    //    return redirect()->route('artists.index')->with('success', 'Artist Deleted Successfully');
-    return response()->json(['success'=>true]);
+        //    return redirect()->route('artists.index')->with('success', 'Artist Deleted Successfully');
+        return response()->json(['success' => true]);
     }
 
 

@@ -1,7 +1,7 @@
 @extends('layouts.backend')
-@push('title')
-    <title>Lyricists | Naseed App</title>
-@endpush
+
+@section('title', 'Lyricists')
+
 @push('style')
 <link rel="stylesheet" href="{{ asset('assets') }}/js/plugins/datatables-bs5/css/dataTables.bootstrap5.min.css">
 <link rel="stylesheet" href="{{ asset('assets') }}/js/plugins/datatables-buttons-bs5/css/buttons.bootstrap5.min.css">
