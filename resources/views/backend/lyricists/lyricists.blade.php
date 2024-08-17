@@ -1,6 +1,6 @@
 @extends('layouts.backend')
 @push('title')
-    <title>Artist | Naseed App</title>
+    <title>Lyricists | Naseed App</title>
 @endpush
 @push('style')
 <link rel="stylesheet" href="{{ asset('assets') }}/js/plugins/datatables-bs5/css/dataTables.bootstrap5.min.css">
@@ -30,24 +30,24 @@
                           </tr>
                         </thead>
                         <tbody>
-                            @foreach ($artists as $key=> $artist )
+                            @foreach ($lyricists as $key=> $lyricist )
                             <tr>
                               <td class="text-center fs-sm">{{$key+1}}</td>
-                              <td class="fw-semibold fs-sm">{{$artist->name}}</td>
-                              <td class="fw-semibold fs-sm">{{$artist->description}}</td>
+                              <td class="fw-semibold fs-sm">{{$lyricist->name}}</td>
+                              <td class="fw-semibold fs-sm">{{$lyricist->description}}</td>
                               <td class="fs-sm">
                                 <img src="" alt="">
                               </td>
                               <td>
-                                <form action="" method="POST">
+                                <form id="statusForm" action="{{ route('lyricistStatus', $lyricist->id) }}" method="POST">
                                     @csrf
                                     <div class="form-check form-switch">
-                                        <input class="form-check-input" type="checkbox" {{$artist->status == 1 ? 'checked': ''}} id="example-switch-default1" name="status" onchange="this.form.submit()">
+                                        <input class="form-check-input" data-id="{{$lyricist->id}}" value="{{$lyricist->id}}" type="checkbox" {{$lyricist->status == 1 ? 'checked': ''}} id="example-switch-default1" name="status" onchange="updateStatus(this)">
                                     </div>
                                 </form>
                               </td>
                               <td class="text-center">
-                                    <a href="#" onclick="deleteArtist(this)" data-id="{{$artist->id}}"><i class="far fa-trash-can text-danger"></i></a>
+                                    <a href="#" onclick="deleteLyricists(this)" data-id="{{$lyricist->id}}"><i class="far fa-trash-can text-danger"></i></a>
                               </td>
                             </tr>
                             @endforeach
@@ -60,10 +60,10 @@
             <div class="col-lg-4">
                 <div class="block block-rounded">
                     <div class="block-header block-header-default">
-                        <h3 class="block-title">Add Artist</h3>
+                        <h3 class="block-title">Add Lyricist</h3>
                     </div>
                     <div class="block-content block-content-full overflow-x-auto">
-                        <form action="{{route('artists.store')}}" method="POST" enctype="multipart/form-data">
+                        <form action="{{route('lyricists.store')}}" method="POST" enctype="multipart/form-data">
                             @csrf
                             <div class="mb-3">
                                 <label for="name" class="form-label">Name</label>
@@ -107,7 +107,7 @@
 <script src="{{ asset('assets') }}/js/pages/be_tables_datatables.min.js"></script>
 
 <script>
-    function deleteArtist(button){
+    function deleteLyricists(button){
         const id = $(button).data('id');
         Swal.fire({
         title: "Are you sure?",
@@ -121,7 +121,7 @@
         if (result.isConfirmed) {
 
 
-            let url = "{{ route('artists.destroy', ':id') }}";
+            let url = "{{ route('lyricists.destroy', ':id') }}";
             url = url.replace(':id', id);
             let method = "DELETE";
             let token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
@@ -146,5 +146,33 @@
         }
         });
     }
+</script>
+
+
+<script>
+   function updateStatus(element) {
+    let id = element.value; 
+    let url = "{{ route('lyricistStatus', ':id') }}";
+    url = url.replace(':id', id);
+
+    $.ajax({
+        url: url,
+        type: 'POST',
+        dataType: 'json',
+        headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+        success: function(data) {
+            if(data.success) {
+                toastr.success('Status Updated Successfully');
+            } else {
+                toastr.error('Failed to Update Status');
+            }
+        },
+        error: function(xhr, status, error) {
+            toastr.error('An error occurred: ' + error);
+        }
+    });
+}
 </script>
 @endpush

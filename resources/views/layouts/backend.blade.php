@@ -566,6 +566,14 @@
                             </a>
                         </li>
 
+                        {{-- Lyricists --}}
+                        <li class="nav-main-item">
+                            <a class="nav-main-link {{$title == 'lyricists'?'active':''}}" href="{{route('lyricists.index')}}">
+                                <i class="nav-main-link-icon si si-speedometer"></i>
+                                <span class="nav-main-link-name">Lyricists</span>
+                            </a>
+                        </li>
+
                         <li class="nav-main-item">
                             <a class="nav-main-link nav-main-link-submenu" data-toggle="submenu" aria-haspopup="true"
                                 aria-expanded="false" href="#">
