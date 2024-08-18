@@ -1,6 +1,5 @@
 <?php
 
-
 return [
     'title' => 'Qaseedah',
     'description' => 'Create and manage your Nasheeds',

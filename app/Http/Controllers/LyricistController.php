@@ -44,7 +44,7 @@ class LyricistController extends Controller
         // check slug availability
         $i = 1;
         while (lyricist::where('slug', $request['slug'])->exists()) {
-            $request['slug'] = Str::slug($request->name) . '-' . $i;
+            $request['slug'] = Str::slug($request->name).'-'.$i;
             $i++;
         }
 
@@ -53,6 +53,7 @@ class LyricistController extends Controller
             'description' => $request->description,
             'slug' => $request->slug,
         ]);
+
         return back()->with('success', 'lyricists Created Successfully');
     }
 
@@ -86,10 +87,8 @@ class LyricistController extends Controller
     public function destroy(string $id)
     {
         lyricist::find($id)->delete();
+
         //    return redirect()->route('artists.index')->with('success', 'Artist Deleted Successfully');
         return response()->json(['success' => true]);
     }
-
-
-
 }

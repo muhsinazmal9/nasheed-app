@@ -15,10 +15,10 @@ class ArtistController extends Controller
     {
 
         $artists = Artist::all();
+
         return view('backend.artist.index', [
             'artists' => $artists,
         ]);
-
 
     }
 
@@ -46,7 +46,7 @@ class ArtistController extends Controller
         // check slug availability
         $i = 1;
         while (Artist::where('slug', $request['slug'])->exists()) {
-            $request['slug'] = Str::slug($request->name) . '-' . $i;
+            $request['slug'] = Str::slug($request->name).'-'.$i;
             $i++;
         }
 
@@ -55,6 +55,7 @@ class ArtistController extends Controller
             'description' => $request->description,
             'slug' => $request->slug,
         ]);
+
         return back()->with('success', 'Artist Created Successfully');
 
     }

@@ -1,6 +1,6 @@
 <?php
 
-if (!function_exists('success')) {
+if (! function_exists('success')) {
     function success($message = 'Success', $data = [], $status = 200)
     {
         return response()->json([
@@ -12,7 +12,7 @@ if (!function_exists('success')) {
     }
 }
 
-if (!function_exists('error')) {
+if (! function_exists('error')) {
     function error($message = 'Error', $data = [], $status = 500)
     {
         return response()->json([

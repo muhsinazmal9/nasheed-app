@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Dedication;
 use App\Http\Requests\StoreDedicationRequest;
 use App\Http\Requests\UpdateDedicationRequest;
+use App\Models\Dedication;
 
 class DedicationController extends Controller
 {
