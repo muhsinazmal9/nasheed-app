@@ -84,11 +84,14 @@ class LyricistController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(lyricist $lyricist)
     {
-        lyricist::find($id)->delete();
+        try {
+            $lyricist->delete();
+        } catch (\Exception $e) {
+            return error($e->getMessage());
+        }
 
-        //    return redirect()->route('artists.index')->with('success', 'Artist Deleted Successfully');
-        return response()->json(['success' => true]);
+        return success('Lyricist Deleted Successfully');
     }
 }

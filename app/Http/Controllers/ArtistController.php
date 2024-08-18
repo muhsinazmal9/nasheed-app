@@ -16,7 +16,7 @@ class ArtistController extends Controller
 
         $artists = Artist::all();
 
-        return view('backend.artist.index', [
+        return view('backend.artists.index', [
             'artists' => $artists,
         ]);
 
@@ -96,5 +96,12 @@ class ArtistController extends Controller
         }
 
         return success('Artist Deleted Successfully');
+    }
+
+    public function updateStatus(Artist $artist)
+    {
+        $artist->update([
+            'status' => $artist->status == 0 ? 1 : 0,
+        ]);
     }
 }

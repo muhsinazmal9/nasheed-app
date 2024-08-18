@@ -105,6 +105,7 @@
                 duration: 3000,
                 gravity: "top",
                 position: "right",
+                close: true,
                 stopOnFocus: true,
                 style: {
                     background: "linear-gradient(to right, #ff5f6d, #ffc371)",
@@ -113,6 +114,38 @@
             }).showToast();
         </script>
     @endif
+
+    <script>
+        function showError(msg) {
+            Toastify({
+                text: msg,
+                duration: 3000,
+                gravity: "top",
+                position: "right",
+                stopOnFocus: true,
+                close: true,
+                style: {
+                    background: "linear-gradient(to right, #ff5f6d, #ffc371)",
+                },
+                onClick: function() {}
+            }).showToast();
+        }
+
+        function showSuccess(msg) {
+            Toastify({
+                text: msg,
+                duration: 3000,
+                gravity: "top",
+                position: "right",
+                close: true,
+                stopOnFocus: true,
+                style: {
+                    background: "linear-gradient(to right, #00b09b, #96c93d)",
+                },
+                onClick: function() {}
+            }).showToast();
+        }
+    </script>
 
     <script src="{{ asset('assets') }}/js/oneui.app.min-5.9.js"></script>
     @stack('script')

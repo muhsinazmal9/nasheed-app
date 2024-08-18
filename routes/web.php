@@ -22,13 +22,15 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/dashboard', 'dashboard')->name('dashboard');
     });
 
-    Route::resource('/artists', ArtistController::class);
-
-    Route::controller(LyricistController::class)->group(function () {
-        Route::get('/update-status/{lyricist}', 'updateStatus')->name('updateStatus');
+    Route::controller(ArtistController::class)->name('artists.')->group(function () {
+        Route::get('/update-status/{artist}', 'updateStatus')->name('status.update');
     });
 
-    Route::post('/lyricistStatus/{id}', [HomeController::class, 'lyricistStatus'])->name('lyricistStatus');
+    Route::controller(LyricistController::class)->name('lyricists.')->group(function () {
+        Route::get('/update-status/{lyricist}', 'updateStatus')->name('status.update');
+    });
+
+    Route::resource('/artists', ArtistController::class);
     Route::resource('/lyricists', LyricistController::class);
 });
 
