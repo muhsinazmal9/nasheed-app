@@ -26,7 +26,9 @@ Route::middleware(['auth', 'verified'])->group(function(){
     Route::resource('/artists', ArtistController::class);
 
 
-
+    Route::controller(LyricistController::class)->group(function(){
+        Route::get('/update-status/{lyricist}', 'updateStatus')->name('updateStatus');
+    });
 
     Route::post('/lyricistStatus/{id}', [HomeController::class, 'lyricistStatus'])->name('lyricistStatus');
     Route::resource('/lyricists', LyricistController::class);

@@ -15,8 +15,8 @@ class ArtistController extends Controller
     {
 
         $artists = Artist::all();
-        return view('backend.artist.artist', [
-            'artists'=>$artists,
+        return view('backend.artist.index', [
+            'artists' => $artists,
         ]);
 
 
@@ -36,24 +36,24 @@ class ArtistController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name'=>'required',
-            'description'=>'required',
+            'name' => 'required',
+            'description' => 'required',
             // 'image'=>'required|image',
         ]);
 
         $request['slug'] = Str::slug($request->name);
 
-        // check username availability
+        // check slug availability
         $i = 1;
         while (Artist::where('slug', $request['slug'])->exists()) {
-            $request['slug'] = Str::slug($request->name).'-'.$i;
+            $request['slug'] = Str::slug($request->name) . '-' . $i;
             $i++;
         }
 
         Artist::create([
-            'name'=>$request->name,
-            'description'=>$request->description,
-            'slug'=>$request->slug,
+            'name' => $request->name,
+            'description' => $request->description,
+            'slug' => $request->slug,
         ]);
         return back()->with('success', 'Artist Created Successfully');
 
@@ -86,11 +86,14 @@ class ArtistController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Artist $artist)
     {
-       Artist::find($id)->delete();
-    //    return redirect()->route('artists.index')->with('success', 'Artist Deleted Successfully');
-    return response()->json(['success'=>true]);
+        try {
+            $artist->delete();
+        } catch (\Exception $e) {
+            return error($e->getMessage());
+        }
 
+        return success('Artist Deleted Successfully');
     }
 }

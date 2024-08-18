@@ -51,7 +51,7 @@
 
         @include('layouts.partials.backend-side-navbar') <!-- Left Side Navbar -->
 
-        @include('layouts.partials.backend-top-heading')
+        @include('layouts.partials.backend-top-header')
 
         <main id="main-container">
             @yield('content')

@@ -2,7 +2,7 @@
 
 
 return [
-    'title' => 'Nasheed App',
+    'title' => 'Qaseedah',
     'description' => 'Create and manage your Nasheeds',
     'keywords' => [
         'Nasheed',

@@ -13,9 +13,9 @@ class LyricistController extends Controller
      */
     public function index()
     {
-
         $lyricists = lyricist::all();
-        return view('backend.lyricists.lyricists', [
+
+        return view('backend.lyricists.index', [
             'lyricists' => $lyricists,
         ]);
     }
@@ -41,7 +41,7 @@ class LyricistController extends Controller
 
         $request['slug'] = Str::slug($request->name);
 
-        // check username availability
+        // check slug availability
         $i = 1;
         while (lyricist::where('slug', $request['slug'])->exists()) {
             $request['slug'] = Str::slug($request->name) . '-' . $i;

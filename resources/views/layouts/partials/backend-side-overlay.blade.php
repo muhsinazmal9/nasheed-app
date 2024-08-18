@@ -1,7 +1,7 @@
 <aside id="side-overlay">
     <div class="content-header border-bottom">
         <a class="img-link me-1" href="javascript:void(0)">
-            <img class="img-avatar img-avatar32" src="https://placehold.co/100" alt="">
+            <img class="img-avatar img-avatar32" src="https://placehold.co/100" alt="" loading="lazy">
         </a>
         <div class="ms-2">
             <a class="text-dark fw-semibold fs-sm" href="javascript:void(0)">{{ auth()->user()->name }}</a>
