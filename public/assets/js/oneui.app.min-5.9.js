@@ -1,9 +1,3 @@
-/*!
- * oneui - v5.9.0
- * @author pixelcave - https://pixelcave.com
- * Copyright (c) 2024
- */
-/*! For license information please see oneui.app.min-5.9.txt */
 !(function () {
   var e = {
       610: function (e) {
