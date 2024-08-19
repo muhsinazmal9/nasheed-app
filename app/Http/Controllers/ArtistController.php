@@ -3,8 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Artist;
-use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class ArtistController extends Controller
 {
@@ -92,6 +93,7 @@ class ArtistController extends Controller
         try {
             $artist->delete();
         } catch (\Exception $e) {
+            Log::error($e);
             return error($e->getMessage());
         }
 
@@ -100,8 +102,15 @@ class ArtistController extends Controller
 
     public function updateStatus(Artist $artist)
     {
-        $artist->update([
-            'status' => $artist->status == 0 ? 1 : 0,
-        ]);
+        try {
+            $artist->update([
+                'status' => $artist->status == 0 ? 1 : 0,
+            ]);
+        } catch (\Exception $e) {
+            Log::error($e);
+            return error($e->getMessage());
+        }
+
+        return success('Artist Status Updated Successfully');
     }
 }

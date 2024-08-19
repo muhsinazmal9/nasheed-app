@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\lyricist;
-use Illuminate\Http\Request;
+use App\Models\Lyricist;
 use Illuminate\Support\Str;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class LyricistController extends Controller
 {
@@ -13,7 +14,7 @@ class LyricistController extends Controller
      */
     public function index()
     {
-        $lyricists = lyricist::all();
+        $lyricists = Lyricist::all();
 
         return view('backend.lyricists.index', [
             'lyricists' => $lyricists,
@@ -43,7 +44,7 @@ class LyricistController extends Controller
 
         // check slug availability
         $i = 1;
-        while (lyricist::where('slug', $request['slug'])->exists()) {
+        while (Lyricist::where('slug', $request['slug'])->exists()) {
             $request['slug'] = Str::slug($request->name).'-'.$i;
             $i++;
         }
@@ -89,9 +90,24 @@ class LyricistController extends Controller
         try {
             $lyricist->delete();
         } catch (\Exception $e) {
+            Log::error($e);
             return error($e->getMessage());
         }
 
         return success('Lyricist Deleted Successfully');
+    }
+
+    public function updateStatus(lyricist $lyricist)
+    {
+        try {
+            $lyricist->update([
+                'status' => $lyricist->status == 0 ? 1 : 0,
+            ]);
+        } catch (\Exception $e) {
+            Log::error($e);
+            return error($e->getMessage());
+        }
+
+        return success('Status Updated Successfully');
     }
 }

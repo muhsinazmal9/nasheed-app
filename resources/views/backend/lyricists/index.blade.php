@@ -9,13 +9,36 @@
         href="{{ asset('assets') }}/js/plugins/datatables-responsive-bs5/css/responsive.bootstrap5.min.css">
 @endpush
 @section('content')
+
+
+    <div class="bg-body-light">
+        <div class="content content-full">
+            <div class="d-flex flex-column flex-sm-row justify-content-sm-between align-items-sm-center py-2">
+                <div class="flex-grow-1">
+                    <h1 class="h3 fw-bold mb-1">
+                        Lyricists
+                    </h1>
+                </div>
+                <nav class="flex-shrink-0 mt-3 mt-sm-0 ms-sm-3" aria-label="breadcrumb">
+                    <ol class="breadcrumb breadcrumb-alt">
+                        <li class="breadcrumb-item">
+                            <a class="link-fx" href="javascript:void(0)">Lyricists</a>
+                        </li>
+                        <li class="breadcrumb-item" aria-current="page">
+                            List
+                        </li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
     <div class="content">
         <div class="row">
             <div class="col-lg-8">
                 <div class="block block-rounded">
                     <div class="block-header block-header-default">
                         <h3 class="block-title">
-                            Artist List
+                            Lyricist List
                         </h3>
                     </div>
                     <div class="block-content block-content-full overflow-x-auto">
@@ -40,23 +63,19 @@
                                             <img src="" alt="">
                                         </td>
                                         <td>
-                                            <form id="statusForm" action="{{ route('lyricistStatus', $lyricist->id) }}"
-                                                method="POST">
-                                                @csrf
-                                                <div class="form-check form-switch">
-                                                    <input class="form-check-input" data-id="{{ $lyricist->id }}"
-                                                        value="{{ $lyricist->id }}" type="checkbox"
-                                                        {{ $lyricist->status == 1 ? 'checked' : '' }}
-                                                        id="example-switch-default1" name="status"
-                                                        onchange="updateStatus(this)">
-                                                </div>
-                                            </form>
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox"
+                                                    {{ $lyricist->status == 1 ? 'checked' : '' }} name="status"
+                                                    data-id="{{ $lyricist->id }}" data-status="{{ $lyricist->status }}"
+                                                    onchange="updateLyricistStatus(this)">
+                                            </div>
+
                                         </td>
                                         <td class="text-center">
-                                            <a href="#" onclick="deleteLyricists(this)"
+                                            <button class="border-0" onclick="deleteLyricist(this)"
                                                 data-id="{{ $lyricist->id }}">
                                                 <i class="far fa-trash-can text-danger"></i>
-                                            </a>
+                                            </button>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -116,7 +135,7 @@
     <script src="{{ asset('assets') }}/js/pages/be_tables_datatables.min.js"></script>
 
     <script>
-        function deleteLyricists(button) {
+        function deleteLyricist(button) {
             const id = $(button).data('id');
             Swal.fire({
                 title: "Are you sure?",
@@ -152,13 +171,29 @@
                 }
             });
         }
-    </script>
 
+        function updateLyricistStatus(element) {
+            Swal.fire({
+                title: "Are you sure?",
+                text: "You won't be able to revert this!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes, update it!"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    updateLyricistStatusAjax(element);
+                } else {
+                    element.checked = !element.checked;
+                }
+            })
+        }
 
-    <script>
-        function updateStatus(element) {
-            let id = element.value;
-            let url = "{{ route('lyricistStatus', ':id') }}";
+        function updateLyricistStatusAjax(element) {
+            console.log(element);
+            const id = $(element).data('id');
+            let url = "{{ route('lyricists.status.update', ':id') }}";
             url = url.replace(':id', id);
 
             $.ajax({
@@ -170,13 +205,14 @@
                 },
                 success: function(data) {
                     if (data.success) {
-                        toastr.success('Status Updated Successfully');
+                        showSuccess(data.message);
                     } else {
-                        toastr.error('Failed to Update Status');
+                        showError(data.message);
                     }
                 },
                 error: function(xhr, status, error) {
-                    toastr.error('An error occurred: ' + error);
+                    console.log(xhr.responseText);
+                    showError(error);
                 }
             });
         }

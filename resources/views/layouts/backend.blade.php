@@ -79,6 +79,9 @@
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+    <!-- Main JS -->
+    <script src="{{ asset('assets') }}/js/oneui.app.min-5.9.js"></script>
+
 
     @if (session('success'))
         <script>
@@ -147,7 +150,8 @@
         }
     </script>
 
-    <script src="{{ asset('assets') }}/js/oneui.app.min-5.9.js"></script>
+
+
     @stack('script')
 
 </body>

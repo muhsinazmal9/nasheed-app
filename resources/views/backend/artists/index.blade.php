@@ -9,6 +9,27 @@
         href="{{ asset('assets') }}/js/plugins/datatables-responsive-bs5/css/responsive.bootstrap5.min.css">
 @endpush
 @section('content')
+    <div class="bg-body-light">
+        <div class="content content-full">
+            <div class="d-flex flex-column flex-sm-row justify-content-sm-between align-items-sm-center py-2">
+                <div class="flex-grow-1">
+                    <h1 class="h3 fw-bold mb-1">
+                        Artists
+                    </h1>
+                </div>
+                <nav class="flex-shrink-0 mt-3 mt-sm-0 ms-sm-3" aria-label="breadcrumb">
+                    <ol class="breadcrumb breadcrumb-alt">
+                        <li class="breadcrumb-item">
+                            <a class="link-fx" href="javascript:void(0)">Artists</a>
+                        </li>
+                        <li class="breadcrumb-item" aria-current="page">
+                            List
+                        </li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
     <div class="content">
         <div class="row">
             <div class="col-lg-8">
@@ -19,7 +40,7 @@
                         </h3>
                     </div>
                     <div class="block-content block-content-full overflow-x-auto">
-                        <table class="table table-bordered table-striped table-vcenter js-dataTable-responsive">
+                        <table class="table table-bordered table-striped table-vcenter" id="artistsTable">
                             <thead>
                                 <tr>
                                     <th class="text-center">SL</th>
@@ -40,19 +61,19 @@
                                             <img src="" alt="">
                                         </td>
                                         <td>
-                                            <form action="{{ route('artists.status.update', $artist->id) }}" method="POST">
-                                                @csrf
-                                                <div class="form-check form-switch">
-                                                    <input class="form-check-input" type="checkbox"
-                                                        {{ $artist->status == 1 ? 'checked' : '' }}
-                                                        id="example-switch-default1" name="status"
-                                                        onchange="this.form.submit()">
-                                                </div>
-                                            </form>
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox"
+                                                    {{ $artist->status == 1 ? 'checked' : '' }} name="status"
+                                                    data-id="{{ $artist->id }}" data-status="{{ $artist->status }}"
+                                                    onchange="updateArtistStatus(this)">
+                                            </div>
                                         </td>
                                         <td class="text-center">
-                                            <a href="#" onclick="deleteArtist(this)" data-id="{{ $artist->id }}"><i
-                                                    class="far fa-trash-can text-danger"></i></a>
+                                            <button class="border-0 btn btn-sm" href="#" data-id="{{ $artist->id }}"><i
+                                                    class="fa fa-pencil text-secondary"></i></button>
+                                            <button class="border-0 btn btn-sm " href="#" onclick="deleteArtist(this)"
+                                                data-id="{{ $artist->id }}"><i
+                                                    class="far fa-trash-can text-danger"></i></button>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -146,6 +167,50 @@
                         }
                     });
 
+                }
+            });
+        }
+
+        function updateArtistStatus(element) {
+            Swal.fire({
+                title: "Are you sure?",
+                text: "You won't be able to revert this!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes, update it!"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    updateArtistStatusAjax(element);
+                } else {
+                    element.checked = !element.checked;
+                }
+            })
+        }
+
+        function updateArtistStatusAjax(element) {
+            const id = $(element).data('id');
+            let url = "{{ route('artists.status.update', ':id') }}";
+            url = url.replace(':id', id);
+
+            $.ajax({
+                url: url,
+                type: 'POST',
+                dataType: 'json',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function(data) {
+                    if (data.success) {
+                        showSuccess(data.message);
+                    } else {
+                        showError(data.message);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.log(xhr.responseText);
+                    showError(error);
                 }
             });
         }

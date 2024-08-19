@@ -22,12 +22,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/dashboard', 'dashboard')->name('dashboard');
     });
 
-    Route::controller(ArtistController::class)->name('artists.')->group(function () {
-        Route::get('/update-status/{artist}', 'updateStatus')->name('status.update');
+    Route::controller(ArtistController::class)->name('artists.')->prefix('artists')->group(function () {
+        Route::post('/update-status/{artist}', 'updateStatus')->name('status.update');
     });
 
-    Route::controller(LyricistController::class)->name('lyricists.')->group(function () {
-        Route::get('/update-status/{lyricist}', 'updateStatus')->name('status.update');
+    Route::controller(LyricistController::class)->name('lyricists.')->prefix('lyricists')->group(function () {
+        Route::post('/update-status/{lyricist}', 'updateStatus')->name('status.update');
     });
 
     Route::resource('/artists', ArtistController::class);
