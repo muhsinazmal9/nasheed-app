@@ -2,8 +2,8 @@
 
 namespace App\Http\Requests\Api\Auth;
 
-use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\ValidationException;
 
 class RegisterRequest extends FormRequest
@@ -38,7 +38,6 @@ class RegisterRequest extends FormRequest
             'password_confirmation' => 'required|same:password',
         ];
     }
-
 
     public function failedValidation(Validator $validator)
     {
