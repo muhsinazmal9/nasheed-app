@@ -1,10 +1,11 @@
 <?php
 
-use App\Http\Controllers\ArtistController;
-use App\Http\Controllers\HomeController;
-use App\Http\Controllers\LyricistController;
-use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ArtistController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\LyricistController;
+use App\Http\Controllers\DedicationController;
 
 Route::get('/', function () {
     return redirect()->route('dashboard');
@@ -32,6 +33,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::resource('/artists', ArtistController::class);
     Route::resource('/lyricists', LyricistController::class);
+    Route::resource('/dedications', DedicationController::class);
 });
 
 require __DIR__.'/auth.php';

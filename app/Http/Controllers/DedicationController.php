@@ -5,31 +5,41 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreDedicationRequest;
 use App\Http\Requests\UpdateDedicationRequest;
 use App\Models\Dedication;
+use App\Services\DedicationService;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 
 class DedicationController extends Controller
 {
+    public function __construct(
+        private DedicationService $dedicationService
+    )
+    {
+    }
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(): View
     {
-        //
+        return view('backend.dedications.index');
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(): View
     {
-        //
+        return view('backend.dedications.create');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreDedicationRequest $request)
+    public function store(StoreDedicationRequest $request): RedirectResponse
     {
-        //
+        $this->dedicationService->createDedication($request->validated());
+        // Dedication::create($request->validated());
+        return redirect()->route('dedications.index')->with('success', 'Dedication Created Successfully');
     }
 
     /**
