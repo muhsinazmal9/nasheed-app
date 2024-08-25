@@ -12,7 +12,7 @@ class TrackController extends Controller
      */
     public function index()
     {
-        return view('backend.track.index');
+        return view('backend.tracks.index');
     }
 
     /**
@@ -20,7 +20,7 @@ class TrackController extends Controller
      */
     public function create()
     {
-        return view('backend.track.create');
+        return view('backend.tracks.create');
     }
 
     /**

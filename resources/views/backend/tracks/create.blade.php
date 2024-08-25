@@ -54,14 +54,14 @@
                             <div class="mb-4">
                                 <label for="duration" class="form-label">Duration</label>
                                 <div class="input-group">
-                                    <input type="number" class="form-control" id="hours" name="duration_hours" min="0" max="23" placeholder="HH">
+                                    <input type="number" class="form-control" id="hours" name="duration_hours" min="0" placeholder="HH">
                                     <span class="input-group-text">:</span>
                                     <input type="number" class="form-control" id="minutes" name="duration_minutes" min="0" max="59" placeholder="MM">
                                     <span class="input-group-text">:</span>
                                     <input type="number" class="form-control" id="seconds" name="duration_seconds" min="0" max="59" placeholder="SS">
                                 </div>
                             </div>
-                            <input type="hidden" id="total_duration" name="duration" value="0">
+                            <input type="hidden" id="total_duration" name="duration" value="0">
                             <div class="mb-4">
                                 <label for="genre" class="form-label">Genre</label>
                                 <input type="text" name="genre" id="genre" class="form-control">
@@ -110,7 +110,6 @@
         const hoursInput = document.getElementById('hours');
         const minutesInput = document.getElementById('minutes');
         const secondsInput = document.getElementById('seconds');
-        const durationDisplay = document.getElementById('duration_display');
 
         function padZero(num) {
             return num.toString().padStart(2, '0');
@@ -121,8 +120,8 @@
             const minutes = padZero(minutesInput.value || 0);
             const seconds = padZero(secondsInput.value || 0);
             const duration = `${hours}:${minutes}:${seconds}`;
-            durationDisplay.textContent = duration;
             const totalSeconds = (parseInt(hours) * 3600) + (parseInt(minutes) * 60) + parseInt(seconds);
+            console.log(totalSeconds);
             document.getElementById('total_duration').value = totalSeconds;
         }
 
@@ -134,7 +133,7 @@
                 } else {
                     value = parseInt(value);
                     if (value < min) value = min;
-                    if (value > max) value = max;
+                    if (max && value > max) value = max;
                     this.value = value;
                 }
                 updateDuration();
@@ -156,7 +155,7 @@
             // Ensure the value is within the valid range
             if (value < min) {
                 input.value = min;
-            } else if (value > max) {
+            } else if (max && value > max) {
                 input.value = max;
             }
             // Pad with leading zero if necessary
@@ -170,7 +169,7 @@
             }
         }
 
-        handleInput(hoursInput, 0, 23);
+        handleInput(hoursInput, 0);
         handleInput(minutesInput, 0, 59);
         handleInput(secondsInput, 0, 59);
     });
