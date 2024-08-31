@@ -51,16 +51,6 @@
                                 <label for="album" class="form-label">Album</label>
                                 <input type="text" name="album" id="album" class="form-control">
                             </div>
-                            <div class="mb-4">
-                                <label for="duration" class="form-label">Duration</label>
-                                <div class="input-group">
-                                    <input type="number" class="form-control" id="hours" name="duration_hours" min="0" placeholder="HH">
-                                    <span class="input-group-text">:</span>
-                                    <input type="number" class="form-control" id="minutes" name="duration_minutes" min="0" max="59" placeholder="MM">
-                                    <span class="input-group-text">:</span>
-                                    <input type="number" class="form-control" id="seconds" name="duration_seconds" min="0" max="59" placeholder="SS">
-                                </div>
-                            </div>
                             <input type="hidden" id="total_duration" name="duration" value="0">
                             <div class="mb-4">
                                 <label for="genre" class="form-label">Genre</label>
@@ -106,73 +96,6 @@
 
 @push('script')
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const hoursInput = document.getElementById('hours');
-        const minutesInput = document.getElementById('minutes');
-        const secondsInput = document.getElementById('seconds');
-
-        function padZero(num) {
-            return num.toString().padStart(2, '0');
-        }
-
-        function updateDuration() {
-            const hours = padZero(hoursInput.value || 0);
-            const minutes = padZero(minutesInput.value || 0);
-            const seconds = padZero(secondsInput.value || 0);
-            const duration = `${hours}:${minutes}:${seconds}`;
-            const totalSeconds = (parseInt(hours) * 3600) + (parseInt(minutes) * 60) + parseInt(seconds);
-            console.log(totalSeconds);
-            document.getElementById('total_duration').value = totalSeconds;
-        }
-
-        function handleInput(input, min, max) {
-            input.addEventListener('input', function() {
-                let value = this.value.replace(/[^0-9]/g, '');
-                if (value == '') {
-                    this.value = '';
-                } else {
-                    value = parseInt(value);
-                    if (value < min) value = min;
-                    if (max && value > max) value = max;
-                    this.value = value;
-                }
-                updateDuration();
-                // On input block
-                onInputBlock(this, min, max);
-            });
-
-            input.addEventListener('blur', function() {
-                if (this.value == '') {
-                    this.value = min;
-                    updateDuration();
-                }
-            });
-        }
-
-        function onInputBlock(input, min, max) {
-            // This function will be called every time the input changes
-            let value = parseInt(input.value);
-            // Ensure the value is within the valid range
-            if (value < min) {
-                input.value = min;
-            } else if (max && value > max) {
-                input.value = max;
-            }
-            // Pad with leading zero if necessary
-            if (input.value.length == 1) {
-                input.value = padZero(input.value);
-            }
-            // You can add more custom logic here
-            // For example, moving focus to the next input when max is reached
-            if (value == max) {
-                if (input == minutesInput) secondsInput.focus();
-            }
-        }
-
-        handleInput(hoursInput, 0);
-        handleInput(minutesInput, 0, 59);
-        handleInput(secondsInput, 0, 59);
-    });
+    // Add additional scripts
 </script>
-
 @endpush
