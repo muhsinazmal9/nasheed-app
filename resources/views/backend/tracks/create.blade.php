@@ -1,7 +1,10 @@
 @extends('layouts.backend')
 
-@push('title')
-    <title>Create Track | Naseed App</title>
+@section('title', 'Create Track')
+
+@push('style')
+    {{-- TODO: remove cdn and replace with local --}}
+    <link href="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/css/tom-select.css" rel="stylesheet">
 @endpush
 
 @section('content')
@@ -41,10 +44,13 @@
                                 <input type="text" name="title" id="title" class="form-control" required>
                             </div>
                             <div class="mb-4">
-                                <label for="artist" class="form-label">Artist</label>
-                                <select name="artist_id" id="artist" class="form-select" required>
-                                    <option value="">Select Artist</option>
+                                <label for="artist_id" class="form-label">Lyricist</label>
+                                <select name="artist_id" id="artist_id" required>
+                                    <option value="">Select Lyricist</option>
                                     <!-- Populate with artists -->
+                                    @foreach ($artists as $artist)
+                                        <option value="{{ $artist->id }}">{{ $artist->name }}</option>
+                                    @endforeach
                                 </select>
                             </div>
                             <div class="mb-4">
@@ -72,7 +78,7 @@
                             </div>
                             <div class="mb-4">
                                 <label for="audio_file" class="form-label">Audio File</label>
-                                <input type="file" class="form-control" name="audio_file" id="audio_file" required>
+                                <input type="file" class="form-control" name="audio_file" id="audio_file" accept=".mp3,.wav" required>
                             </div>
                             <div class="mb-4">
                                 <label for="status" class="form-label">Status</label>
@@ -95,7 +101,15 @@
 @endsection
 
 @push('script')
-<script>
-    // Add additional scripts
-</script>
+    <script src="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/js/tom-select.complete.min.js"></script>
+    <script>
+        new TomSelect('#artist_id', {
+            persist: false,
+            sortField: {
+                field: "text",
+                direction: "asc"
+            },
+            create: false
+        });
+    </script>
 @endpush
