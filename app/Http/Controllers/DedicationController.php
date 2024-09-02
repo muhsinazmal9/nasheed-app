@@ -21,7 +21,9 @@ class DedicationController extends Controller
      */
     public function index(): View
     {
-        return view('backend.dedications.index');
+        $dedications = Dedication::latest()->get();
+
+        return view('backend.dedications.index', compact('dedications'));
     }
 
     /**

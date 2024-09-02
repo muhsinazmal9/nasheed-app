@@ -83,74 +83,49 @@
     <script src="{{ asset('assets') }}/js/oneui.app.min-5.9.js"></script>
 
 
-    @if (session('success'))
-        <script>
-            // toastr.success('{{ session('success') }}')
-            Toastify({
-                text: '{{ session('success') }}',
-                duration: 3000,
-                close: true,
-                gravity: "top",
-                position: "right",
-                stopOnFocus: true,
-                style: {
-                    background: "linear-gradient(to right, #00b09b, #96c93d)",
-                },
-                onClick: function() {}
-            }).showToast();
-        </script>
-    @endif
-
-    @if (session('error'))
-        <script>
-            Toastify({
-                text: '{{ session('error') }}',
-                duration: 3000,
-                gravity: "top",
-                position: "right",
-                close: true,
-                stopOnFocus: true,
-                style: {
-                    background: "linear-gradient(to right, #ff5f6d, #ffc371)",
-                },
-                onClick: function() {}
-            }).showToast();
-        </script>
-    @endif
-
     <script>
-        function showError(msg) {
-            Toastify({
-                text: msg,
-                duration: 3000,
-                gravity: "top",
-                position: "right",
-                stopOnFocus: true,
-                close: true,
-                style: {
-                    background: "linear-gradient(to right, #ff5f6d, #ffc371)",
-                },
-                onClick: function() {}
-            }).showToast();
-        }
+        function showToast(text, type = 'success') {
+            let bg;
+            switch (type) {
+                case 'error':
+                    from = '#ff5b5c';
+                    to = '#ff5b5c';
+                    break;
+                case 'success':
+                    from = '#00b09b';
+                    to = '#96c93d';
+                    break;
+                default:
+                    from = '#00b09b';
+                    to = '#96c93d';
+                    break;
+            }
+            console.log(type, bg);
 
-        function showSuccess(msg) {
             Toastify({
-                text: msg,
+                text,
                 duration: 3000,
                 gravity: "top",
                 position: "right",
                 close: true,
                 stopOnFocus: true,
-                style: {
-                    background: "linear-gradient(to right, #00b09b, #96c93d)",
-                },
+                style: { background: `linear-gradient(to right, ${from}, ${to})` },
                 onClick: function() {}
             }).showToast();
         }
     </script>
 
+    @session('success')
+        <script>
+            showToast('{{ session('success') }}', 'success');
+        </script>
+    @endif
 
+    @if (session('error'))
+        <script>
+            showToast('{{ session('error') }}', 'error');
+        </script>
+    @endif
 
     @stack('script')
 
