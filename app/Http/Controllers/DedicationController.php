@@ -28,14 +28,6 @@ class DedicationController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     */
-    public function create(): View
-    {
-        return view('backend.dedications.create');
-    }
-
-    /**
      * Store a newly created resource in storage.
      */
     public function store(StoreDedicationRequest $request): RedirectResponse
@@ -78,8 +70,13 @@ class DedicationController extends Controller
      */
     public function destroy(Dedication $dedication)
     {
-        $dedication->delete();
-        return success('Dedication Deleted Successfully');
+        try {
+            $dedication->delete();
+            return success('Dedication Deleted Successfully');
+        } catch (\Exception $e) {
+            logger()->error('Error deleting dedication: ' . $e->getMessage());
+            return error('Error deleting dedication');
+        }
     }
 
     public function updateStatus(Dedication $dedication): JsonResponse
