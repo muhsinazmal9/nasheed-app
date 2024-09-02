@@ -31,6 +31,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/update-status/{lyricist}', 'updateStatus')->name('status.update');
     });
 
+    Route::controller(DedicationController::class)->name('dedications.')->prefix('dedications')->group(function () {
+        Route::post('/update-status/{dedication}', 'updateStatus')->name('status.update');
+    });
+
     Route::resource('/artists', ArtistController::class);
     Route::resource('/lyricists', LyricistController::class);
     Route::resource('/dedications', DedicationController::class);

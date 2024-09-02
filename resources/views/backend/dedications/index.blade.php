@@ -33,7 +33,7 @@
     </div>
     <div class="content">
         <div class="row">
-            <div class="col-lg-4 h-100">
+            <div class="col-lg-4">
                 <div class="block block-rounded">
                     <div class="block-header block-header-default">
                         <h3 class="block-title">Add Dedication</h3>
@@ -92,7 +92,7 @@
                         </h3>
                     </div>
                     <div class="block-content block-content-full overflow-x-auto">
-                        <table class="table table-bordered table-striped table-vcenter" id="artistsTable">
+                        <table class="table table-bordered table-striped table-vcenter" id="dedicationsTable">
                             <thead>
                                 <tr>
                                     <th class="text-center">SL</th>
@@ -145,7 +145,13 @@
 
 
 @push('script')
+    @include('backend.includes.dataTable_scripts')
+
     <script>
+        $('#dedicationsTable').DataTable({
+            responsive: true,
+        });
+
         function deleteDedication(button) {
             Swal.fire({
                 title: "Are you sure?",
@@ -183,6 +189,49 @@
                         });
                     } else {
                         showToast(response.message, "error");
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.log('xhr.responseText, status, error', xhr.responseText, status, error);
+                    showToast('Something went wrong', "error");
+                }
+            });
+        }
+
+
+        function updateDedicationStatus(element) {
+            Swal.fire({
+                title: "Are you sure?",
+                text: "You won't be able to revert this!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes, update it!"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    updateDedicationStatusAjax(element);
+                } else {
+                    element.checked = !element.checked;
+                }
+            })
+        }
+
+        function updateDedicationStatusAjax(element) {
+            console.log(element);
+            const id = $(element).data('id');
+            let url = "{{ route('dedications.status.update', ':id') }}";
+            url = url.replace(':id', id);
+
+            $.ajax({
+                url: url,
+                type: 'POST',
+                dataType: 'json',
+                success: function(data) {
+                    if (data.success) {
+                        showToast(data.message, "success");
+                    } else {
+                        showToast(data.message, "error");
                     }
                 },
                 error: function(xhr, status, error) {

@@ -7,6 +7,7 @@ use App\Http\Requests\UpdateDedicationRequest;
 use App\Models\Dedication;
 use App\Services\DedicationService;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 
 class DedicationController extends Controller
@@ -79,5 +80,16 @@ class DedicationController extends Controller
     {
         $dedication->delete();
         return success('Dedication Deleted Successfully');
+    }
+
+    public function updateStatus(Dedication $dedication): JsonResponse
+    {
+        try {
+            $dedication->update(['status' => !$dedication->status]);
+            return success('Dedication Status Updated Successfully');
+        } catch (\Exception $e) {
+            logger()->error('Error updating dedication status: ' . $e->getMessage());
+            return error('Error updating dedication status');
+        }
     }
 }
