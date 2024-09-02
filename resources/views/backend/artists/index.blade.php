@@ -134,6 +134,7 @@
     <script src="{{ asset('assets') }}/js/pages/be_tables_datatables.min.js"></script>
 
     <script>
+        $('#artistsTable').DataTable();
         function deleteArtist(button) {
             const id = $(button).data('id');
             Swal.fire({
@@ -161,7 +162,7 @@
                         },
                         success: function(data) {
                             if (data.success) {
-                                showSuccess(data.message);
+                                showToast(data.message, "success");
                                 $(button).closest('tr')[0].remove()
                             }
                         }
@@ -203,14 +204,14 @@
                 },
                 success: function(data) {
                     if (data.success) {
-                        showSuccess(data.message);
+                        showToast(data.message, "success");
                     } else {
-                        showError(data.message);
+                        showToast(data.message, "error");
                     }
                 },
                 error: function(xhr, status, error) {
-                    console.log(xhr.responseText);
-                    showError(error);
+                    console.log('xhr.responseText, status, error', xhr.responseText, status, error);
+                    showToast('Something went wrong', "error");
                 }
             });
         }

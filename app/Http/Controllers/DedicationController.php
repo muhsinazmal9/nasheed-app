@@ -5,31 +5,40 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreDedicationRequest;
 use App\Http\Requests\UpdateDedicationRequest;
 use App\Models\Dedication;
+use App\Services\DedicationService;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 
 class DedicationController extends Controller
 {
+    public function __construct(
+        private DedicationService $dedicationService
+    )
+    {
+    }
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(): View
     {
-        //
-    }
+        $dedications = Dedication::latest()->get();
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        return view('backend.dedications.index', compact('dedications'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreDedicationRequest $request)
+    public function store(StoreDedicationRequest $request): RedirectResponse
     {
-        //
+        $createdDedication = $this->dedicationService->createDedication($request->validated());
+
+        if (!$createdDedication) {
+            return redirect()->back()->with('error', 'Dedication Creation Failed');
+        }
+
+        return redirect()->route('dedications.index')->with('success', 'Dedication Created Successfully');
     }
 
     /**
@@ -61,6 +70,23 @@ class DedicationController extends Controller
      */
     public function destroy(Dedication $dedication)
     {
-        //
+        try {
+            $dedication->delete();
+            return success('Dedication Deleted Successfully');
+        } catch (\Exception $e) {
+            logger()->error('Error deleting dedication: ' . $e->getMessage());
+            return error('Error deleting dedication');
+        }
+    }
+
+    public function updateStatus(Dedication $dedication): JsonResponse
+    {
+        try {
+            $dedication->update(['status' => !$dedication->status]);
+            return success('Dedication Status Updated Successfully');
+        } catch (\Exception $e) {
+            logger()->error('Error updating dedication status: ' . $e->getMessage());
+            return error('Error updating dedication status');
+        }
     }
 }
