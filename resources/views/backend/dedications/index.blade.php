@@ -15,13 +15,13 @@
             <div class="d-flex flex-column flex-sm-row justify-content-sm-between align-items-sm-center py-2">
                 <div class="flex-grow-1">
                     <h1 class="h3 fw-bold mb-1">
-                        Artists
+                        Dedication
                     </h1>
                 </div>
                 <nav class="flex-shrink-0 mt-3 mt-sm-0 ms-sm-3" aria-label="breadcrumb">
                     <ol class="breadcrumb breadcrumb-alt">
                         <li class="breadcrumb-item">
-                            <a class="link-fx" href="javascript:void(0)">Artists</a>
+                            <a class="link-fx" href="javascript:void(0)">Dedications</a>
                         </li>
                         <li class="breadcrumb-item" aria-current="page">
                             List
@@ -33,11 +33,62 @@
     </div>
     <div class="content">
         <div class="row">
+            <div class="col-lg-4 h-100">
+                <div class="block block-rounded">
+                    <div class="block-header block-header-default">
+                        <h3 class="block-title">Add Dedication</h3>
+                    </div>
+                    <div class="block-content block-content-full overflow-x-auto">
+                        <form action="{{ route('dedications.store') }}" method="POST" enctype="multipart/form-data">
+                            @csrf
+                            <div class="mb-3">
+                                <label for="name" class="form-label">Name</label>
+                                <input type="text" name="name" id="name" class="form-control" placeholder="Enter name">
+                            </div>
+                            @error('name')
+                                <div class="alert alert-danger">{{ $message }}</div>
+                            @enderror
+
+                            <div class="mb-3">
+                                <label for="description" class="form-label">Description</label>
+                                <textarea name="description" id="description" cols="30" rows="3" class="form-control" placeholder="Enter description"></textarea>
+                            </div>
+                            @error('description')
+                                <div class="alert alert-danger">{{ $message }}</div>
+                            @enderror
+
+                            <div class="mb-3">
+                                <label for="image" class="form-label">Image</label>
+                                <input type="file" class="form-control" name="image" id="image"
+                                    onchange="document.getElementById('image_preview').src = window.URL.createObjectURL(this.files[0])">
+                            </div>
+                            @error('image')
+                                <div class="alert alert-danger">{{ $message }}</div>
+                            @enderror
+
+                            <div class="mb-3">
+                                <img src="https://placehold.co/100" id="image_preview" alt="" width="100">
+                            </div>
+
+                            <div class="mb-3 form-check form-switch">
+                                <label for="status" class="form-label">Active</label>
+                                <input type="checkbox" name="status" id="status" class="form-check-input">
+                            </div>
+                            @error('status')
+                                <div class="alert alert-danger">{{ $message }}</div>
+                            @enderror
+                            <div>
+                                <button class="btn btn-primary" type="submit">Submit</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
             <div class="col-lg-8">
                 <div class="block block-rounded">
                     <div class="block-header block-header-default">
                         <h3 class="block-title">
-                            Artist List
+                            Dedication List
                         </h3>
                     </div>
                     <div class="block-content block-content-full overflow-x-auto">
@@ -57,7 +108,9 @@
                                     <tr>
                                         <td class="text-center fs-sm">{{ $loop->iteration }}</td>
                                         <td class="fw-semibold fs-sm">{{ $dedication->name }}</td>
-                                        <td class="fw-semibold fs-sm">{{ $dedication->description }}</td>
+                                        <td class="fw-semibold fs-sm" style="max-width: 150px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                                            {{ Str::limit($dedication->description, 100) }}
+                                        </td>
                                         <td class="fs-sm">
                                             <img src="" alt="">
                                         </td>
@@ -85,38 +138,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-lg-4">
-                <div class="block block-rounded">
-                    <div class="block-header block-header-default">
-                        <h3 class="block-title">Add Artist</h3>
-                    </div>
-                    <div class="block-content block-content-full overflow-x-auto">
-                        <form action="{{ route('artists.store') }}" method="POST" enctype="multipart/form-data">
-                            @csrf
-                            <div class="mb-3">
-                                <label for="name" class="form-label">Name</label>
-                                <input type="text" name="name" id="name" class="form-control">
-                            </div>
-                            <div class="mb-3">
-                                <label for="description" class="form-label">Description</label>
-                                <textarea name="description" id="description" cols="30" rows="3" class="form-control"></textarea>
-                            </div>
-                            <div class="mb-3">
-                                <label for="image" class="form-label">Image</label>
-                                <input type="file" class="form-control" name="image" id="image"
-                                    onchange="document.getElementById('image_preview').src = window.URL.createObjectURL(this.files[0])">
-                            </div>
 
-                            <div class="mb-3">
-                                <img src="https://placehold.co/100" id="image_preview" alt="" width="100">
-                            </div>
-                            <div>
-                                <button class="btn btn-primary" type="submit">Submit</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 @endsection
@@ -125,7 +147,6 @@
 @push('script')
     <script>
         function deleteDedication(button) {
-            const id = $(button).data('id');
             Swal.fire({
                 title: "Are you sure?",
                 text: "You won't be able to revert this!",
@@ -137,45 +158,36 @@
             }).then((result) => {
                 if (result.isConfirmed) {
 
-                    let url = "{{ route('dedications.destroy', ':id') }}";
-                    url = url.replace(':id', id);
-                    const method = "DELETE";
+                    deleteDedicationAjax(button);
 
-                    $.ajax({
-                        url: url,
-                        type: 'DELETE',
-                        dataType: 'json',
-                        headers: {
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                        },
-                        success: function(data) {
-                            if (data.success) {
-                                showToast(data.message, "success");
-                                $(button).closest('tr')[0].remove()
-                            }
-                        }
-                    });
 
                 }
             });
         }
 
-        function deleteDedicationAjax(id) {
+        function deleteDedicationAjax(button) {
+            const id = $(button).data('id');
+            const csrf = $('meta[name="csrf-token"]').attr('content');
+            const url = "{{ route('dedications.destroy', ':id') }}".replace(':id', id);
+            const method = "DELETE";
+
             $.ajax({
-                url: "{{ route('dedications.destroy', ':id') }}".replace(':id', id),
-                type: "DELETE",
-                data: {
-                    _token: "{{ csrf_token() }}"
-                },
+                url: url,
+                type: method,
+                dataType: 'JSON',
                 success: function(response) {
-                    if (response.status) {
-                        Swal.fire(
-                            'Deleted!',
-                            'Dedication has been deleted.',
-                            'success'
-                        )
-                        location.reload();
+                    if (response.success) {
+                        showToast(response.message, "success");
+                        $(button).closest('tr').hide(400, function() {
+                            $(this).remove();
+                        });
+                    } else {
+                        showToast(response.message, "error");
                     }
+                },
+                error: function(xhr, status, error) {
+                    console.log('xhr.responseText, status, error', xhr.responseText, status, error);
+                    showToast('Something went wrong', "error");
                 }
             });
         }

@@ -216,7 +216,7 @@
                 },
                 error: function(xhr, status, error) {
                     console.log('xhr.responseText, status, error', xhr.responseText, status, error);
-                    showToast(xhr.responseText, "error");
+                    showToast('Something went wrong', "error");
                 }
             });
         }

@@ -39,8 +39,12 @@ class DedicationController extends Controller
      */
     public function store(StoreDedicationRequest $request): RedirectResponse
     {
-        $this->dedicationService->createDedication($request->validated());
-        // Dedication::create($request->validated());
+        $createdDedication = $this->dedicationService->createDedication($request->validated());
+
+        if (!$createdDedication) {
+            return redirect()->back()->with('error', 'Dedication Creation Failed');
+        }
+
         return redirect()->route('dedications.index')->with('success', 'Dedication Created Successfully');
     }
 
@@ -73,6 +77,7 @@ class DedicationController extends Controller
      */
     public function destroy(Dedication $dedication)
     {
-        //
+        $dedication->delete();
+        return success('Dedication Deleted Successfully');
     }
 }
