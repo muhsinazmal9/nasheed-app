@@ -24,6 +24,12 @@ $navItems = [
         'icon' => 'nav-main-link-icon si si-speedometer',
         'active' => Route::is('dedications.*'),
     ],
+    [
+        'title' => 'Tracks',
+        'url' => route('tracks.index'),
+        'icon' => 'nav-main-link-icon si si-speedometer',
+        'active' => Route::is('tracks.*'),
+    ],
 ];
 
 ?>
