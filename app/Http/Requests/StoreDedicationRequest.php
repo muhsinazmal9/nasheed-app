@@ -11,7 +11,7 @@ class StoreDedicationRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,10 @@ class StoreDedicationRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name' => ['required', 'string', 'max:255'],
+            'description' => ['required', 'string'],
+            'image' => ['image', 'max:2048'],
+            'status' => ['nullable'],
         ];
     }
 }

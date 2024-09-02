@@ -42,7 +42,7 @@
                         </h3>
                     </div>
                     <div class="block-content block-content-full overflow-x-auto">
-                        <table class="table table-bordered table-striped table-vcenter js-dataTable-responsive">
+                        <table class="table table-bordered table-striped table-vcenter" id="lyricistsTable">
                             <thead>
                                 <tr>
                                     <th class="text-center">SL</th>
@@ -121,20 +121,13 @@
 @endsection
 
 @push('script')
-    <script src="{{ asset('assets') }}/js/plugins/datatables/dataTables.min.js"></script>
-    <script src="{{ asset('assets') }}/js/plugins/datatables-bs5/js/dataTables.bootstrap5.min.js"></script>
-    <script src="{{ asset('assets') }}/js/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
-    <script src="{{ asset('assets') }}/js/plugins/datatables-responsive-bs5/js/responsive.bootstrap5.min.js"></script>
-    <script src="{{ asset('assets') }}/js/plugins/datatables-buttons/dataTables.buttons.min.js"></script>
-    <script src="{{ asset('assets') }}/js/plugins/datatables-buttons-bs5/js/buttons.bootstrap5.min.js"></script>
-    <script src="{{ asset('assets') }}/js/plugins/datatables-buttons-jszip/jszip.min.js"></script>
-    <script src="{{ asset('assets') }}/js/plugins/datatables-buttons-pdfmake/pdfmake.min.js"></script>
-    <script src="{{ asset('assets') }}/js/plugins/datatables-buttons-pdfmake/vfs_fonts.js"></script>
-    <script src="{{ asset('assets') }}/js/plugins/datatables-buttons/buttons.print.min.js"></script>
-    <script src="{{ asset('assets') }}/js/plugins/datatables-buttons/buttons.html5.min.js"></script>
-    <script src="{{ asset('assets') }}/js/pages/be_tables_datatables.min.js"></script>
+    @include('backend.includes.dataTable_scripts')
 
     <script>
+        $('#lyricistsTable').DataTable({
+            responsive: true,
+        });
+
         function deleteLyricist(button) {
             const id = $(button).data('id');
             Swal.fire({
@@ -162,7 +155,7 @@
                         },
                         success: function(data) {
                             if (data.success) {
-                                showSuccess(data.message);
+                                showToast(data.message, "success");
                                 $(button).closest('tr')[0].remove()
                             }
                         }
@@ -200,19 +193,16 @@
                 url: url,
                 type: 'POST',
                 dataType: 'json',
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
                 success: function(data) {
                     if (data.success) {
-                        showSuccess(data.message);
+                        showToast(data.message, "success");
                     } else {
-                        showError(data.message);
+                        showToast(data.message, "error");
                     }
                 },
                 error: function(xhr, status, error) {
-                    console.log(xhr.responseText);
-                    showError(error);
+                    console.log('xhr.responseText, status, error', xhr.responseText, status, error);
+                    showToast('Something went wrong', "error");
                 }
             });
         }

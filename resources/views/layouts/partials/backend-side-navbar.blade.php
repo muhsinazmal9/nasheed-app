@@ -1,3 +1,35 @@
+<?php
+$navItems = [
+    [
+        'title' => 'Dashboard',
+        'url' => route('dashboard'),
+        'icon' => 'nav-main-link-icon si si-speedometer',
+        'active' => Route::is('dashboard'),
+    ],
+    [
+        'title' => 'Artists',
+        'url' => route('artists.index'),
+        'icon' => 'nav-main-link-icon si si-speedometer',
+        'active' => Route::is('artists.*'),
+    ],
+    [
+        'title' => 'Lyricists',
+        'url' => route('lyricists.index'),
+        'icon' => 'nav-main-link-icon si si-speedometer',
+        'active' => Route::is('lyricists.*'),
+    ],
+    [
+        'title' => 'Dedications',
+        'url' => route('dedications.index'),
+        'icon' => 'nav-main-link-icon si si-speedometer',
+        'active' => Route::is('dedications.*'),
+    ],
+];
+
+?>
+
+
+
 <nav id="sidebar" aria-label="Main Navigation">
     <div class="content-header">
         <a class="fw-semibold text-dual" href="{{ route('dashboard') }}">
@@ -24,8 +56,8 @@
                         <i class="fa fa-circle text-default"></i>
                     </a>
                     <a class="dropdown-item d-flex align-items-center justify-content-between fw-medium"
-                        data-toggle="theme"
-                        data-theme="{{ asset('assets') }}/css/themes/amethyst.min-5.9.css" href="#">
+                        data-toggle="theme" data-theme="{{ asset('assets') }}/css/themes/amethyst.min-5.9.css"
+                        href="#">
                         <span>Amethyst</span>
                         <i class="fa fa-circle text-amethyst"></i>
                     </a>
@@ -73,8 +105,8 @@
                     </a>
                 </div>
             </div>
-            <a class="d-lg-none btn btn-sm btn-alt-secondary ms-1" data-toggle="layout"
-                data-action="sidebar_close" href="javascript:void(0)">
+            <a class="d-lg-none btn btn-sm btn-alt-secondary ms-1" data-toggle="layout" data-action="sidebar_close"
+                href="javascript:void(0)">
                 <i class="fa fa-fw fa-times"></i>
             </a>
         </div>
@@ -82,41 +114,14 @@
     <div class="js-sidebar-scroll">
         <div class="content-side">
             <ul class="nav-main">
-                <li class="nav-main-item">
-                    <a class="nav-main-link {{ Route::is('dashboard') ? 'active' : '' }}"
-                        href="{{ route('dashboard') }}">
-                        <i class="nav-main-link-icon si si-speedometer"></i>
-                        <span class="nav-main-link-name">Dashboard</span>
-                    </a>
-                </li>
-
-                {{-- Artists --}}
-                <li class="nav-main-item">
-                    <a class="nav-main-link {{ Route::is('artists.*') ? 'active' : '' }}"
-                        href="{{ route('artists.index') }}">
-                        <i class="nav-main-link-icon si si-speedometer"></i>
-                        <span class="nav-main-link-name">Artists</span>
-                    </a>
-                </li>
-
-                {{-- Lyricists --}}
-                <li class="nav-main-item">
-                    <a class="nav-main-link {{ Route::is('lyricists.*') ? 'active' : '' }}"
-                        href="{{ route('lyricists.index') }}">
-                        <i class="nav-main-link-icon si si-speedometer"></i>
-                        <span class="nav-main-link-name">Lyricists</span>
-                    </a>
-                </li>
-
-                {{-- Tracks --}}
-                <li class="nav-main-item">
-                    <a class="nav-main-link {{ Route::is('tracks.*') ? 'active' : '' }}"
-                        href="{{ route('tracks.index') }}">
-                        <i class="nav-main-link-icon si si-speedometer"></i>
-                        <span class="nav-main-link-name">Tracks</span>
-                    </a>
-                </li>
-
+                @foreach ($navItems as $nav)
+                    <li class="nav-main-item">
+                        <a class="nav-main-link {{ $nav['active'] ? 'active' : '' }}" href="{{ $nav['url'] }}">
+                            <i class="{{ $nav['icon'] }}"></i>
+                            <span class="nav-main-link-name">{{ $nav['title'] }}</span>
+                        </a>
+                    </li>
+                @endforeach
             </ul>
         </div>
     </div>
