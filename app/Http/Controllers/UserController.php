@@ -30,7 +30,27 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+       $request->validate([
+           'name' => 'required',
+           'email' => 'required|email|unique:users',
+           'password' => 'required',
+       ]);
+
+       if ($request->status == 'on') {
+           $status = 1;
+       }
+       else{
+           $status = 0;
+       }
+
+       User::create([
+           'name' => $request->name,
+           'email' => $request->email,
+           'password' => bcrypt($request->password),
+           'status' => $status,
+       ]);
+
+       return redirect()->route('users.index')->with('success', 'User Created Successfully');
     }
 
     /**
@@ -44,9 +64,9 @@ class UserController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(User $user)
     {
-        //
+       
     }
 
     /**
