@@ -31,10 +31,13 @@ $navItems = [
         'active' => Route::is('tracks.*'),
     ],
     [
-        'title' => 'Users',
-        'url' => route('users.index'),
-        'icon' => 'nav-main-link-icon si si-speedometer',
-        'active' => Route::is('users.*'),
+        'main-heading' => 'User Management',
+        [
+            'title' => 'Users',
+            'url' => route('users.index'),
+            'icon' => 'nav-main-link-icon si si-speedometer',
+            'active' => Route::is('users.*'),
+        ]
     ],
 ];
 
@@ -127,13 +130,30 @@ $navItems = [
         <div class="content-side">
             <ul class="nav-main">
                 @foreach ($navItems as $nav)
+                    @if (isset($nav['main-heading']) && $nav['main-heading'])
+                        <li class="nav-main-heading">{{ $nav['main-heading'] }}</li>
+                        @foreach ($nav as $subNav)
+                            @if (is_array($subNav))
+                                <li class="nav-main-item">
+                                    <a href="{{ $subNav['url'] }}" class="nav-main-link {{ $subNav['active'] ? 'active' : '' }}">
+                                        <i class="{{ $subNav['icon'] }}"></i>
+                                        {{ $subNav['title'] }}
+                                    </a>
+                                </li>
+                            @endif
+                        @endforeach
+
+                        @continue
+                    @endif
+
                     <li class="nav-main-item">
-                        <a class="nav-main-link {{ $nav['active'] ? 'active' : '' }}" href="{{ $nav['url'] }}">
+                        <a href="{{ $nav['url'] }}" class="nav-main-link {{ $nav['active'] ? 'active' : '' }}">
                             <i class="{{ $nav['icon'] }}"></i>
-                            <span class="nav-main-link-name">{{ $nav['title'] }}</span>
+                            {{ $nav['title'] }}
                         </a>
                     </li>
                 @endforeach
+
             </ul>
         </div>
     </div>
