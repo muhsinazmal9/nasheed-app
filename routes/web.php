@@ -30,6 +30,19 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/update-status/{lyricist}', 'updateStatus')->name('status.update');
     });
 
+<<<<<<< Updated upstream
+=======
+    Route::controller(DedicationController::class)->name('dedications.')->prefix('dedications')->group(function () {
+        Route::post('/update-status/{dedication}', 'updateStatus')->name('status.update');
+    });
+    Route::controller(UserController::class)->name('users.')->prefix('users')->group(function () {
+        Route::post('/update-status/{user}', 'updateStatus')->name('status.update');
+    });
+    Route::controller(ProfileController::class)->name('profile.')->prefix('profile')->group(function () {
+        Route::post('/password-update/{profile}', 'profile_password')->name('password');
+    });
+
+>>>>>>> Stashed changes
     Route::resource('/artists', ArtistController::class);
     Route::resource('/lyricists', LyricistController::class);
 });
