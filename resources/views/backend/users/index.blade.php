@@ -65,7 +65,7 @@
                                         <td class="text-center">
                                             <button class="border-0 btn btn-sm" href="#" data-id="{{ $user->id }}"><i
                                                     class="fa fa-pencil text-secondary fa-xl"></i></button>
-                                            <button class="border-0 btn btn-sm " href="#" onclick="deleteArtist(this)"
+                                            <button class="border-0 btn btn-sm " href="#" onclick="deleteUser(this)"
                                                 data-id="{{ $user->id }}"><i
                                                     class="far fa-trash-can text-danger fa-xl"></i></button>
                                         </td>
@@ -130,7 +130,7 @@
 
     <script>
         $('#usersTable').DataTable();
-        function deleteArtist(button) {
+        function deleteUser(button) {
             const id = $(button).data('id');
             Swal.fire({
                 title: "Are you sure?",
@@ -143,7 +143,7 @@
             }).then((result) => {
                 if (result.isConfirmed) {
 
-                    let url = "{{ route('artists.destroy', ':id') }}";
+                    let url = "{{ route('users.destroy', ':id') }}";
                     url = url.replace(':id', id);
                     let method = "DELETE";
                     let token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
