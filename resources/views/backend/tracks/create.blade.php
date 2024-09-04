@@ -41,7 +41,7 @@
                         <div class="col-lg-8">
                             <div class="mb-4">
                                 <label for="title" class="form-label">Title</label>
-                                <input type="text" name="title" id="title" class="form-control" required>
+                                <input type="text" name="title" id="title" class="form-control" required placeholder="Enter track title">
                             </div>
                             <div class="mb-4">
                                 <label for="artist_id" class="form-label">Lyricist</label>
@@ -55,30 +55,34 @@
                             </div>
                             <div class="mb-4">
                                 <label for="album" class="form-label">Album</label>
-                                <input type="text" name="album" id="album" class="form-control">
+                                <input type="text" name="album" id="album" class="form-control" placeholder="Enter album name">
                             </div>
                             <input type="hidden" id="total_duration" name="duration" value="0">
                             <div class="mb-4">
                                 <label for="genre" class="form-label">Genre</label>
-                                <input type="text" name="genre" id="genre" class="form-control">
+                                <input type="text" name="genre" id="genre" class="form-control" placeholder="Enter genre">
                             </div>
                             <div class="mb-4">
                                 <label for="release_date" class="form-label">Release Date</label>
-                                <input type="date" name="release_date" id="release_date" class="form-control">
+                                <input type="date" name="release_date" id="release_date" class="form-control" placeholder="Enter release date">
                             </div>
                         </div>
                         <div class="col-lg-4">
                             <div class="mb-4">
                                 <label for="cover_image" class="form-label">Cover Image</label>
                                 <input type="file" class="form-control" name="cover_image" id="cover_image"
-                                    onchange="document.getElementById('image_preview').src = window.URL.createObjectURL(this.files[0])">
+                                    onchange="document.getElementById('image_preview').src = window.URL.createObjectURL(this.files[0])" placeholder="Enter cover image">
                             </div>
                             <div class="mb-4">
                                 <img src="https://placehold.co/400x400" id="image_preview" alt="Cover Image Preview" width="100%">
                             </div>
                             <div class="mb-4">
-                                <label for="audio_file" class="form-label">Audio File</label>
-                                <input type="file" class="form-control" name="audio_file" id="audio_file" accept=".mp3,.wav" required>
+                                <label for="input" class="form-label">Audio File</label>
+                                <input type="file" class="form-control" name="audio_file" id="input" accept=".mp3,.wav" required >
+                            </div>
+                            <div class="mb-4">
+                                <label for="audio_file" class="form-label">Audio Play</label>
+                                <audio id="sound" class="form-control" controls></audio>
                             </div>
                             <div class="mb-4">
                                 <label for="status" class="form-label">Status</label>
@@ -111,5 +115,14 @@
             },
             create: false
         });
+    </script>
+    <script type="text/javascript">
+        input.onchange = function(e){
+        var sound = document.getElementById('sound');
+        sound.src = URL.createObjectURL(this.files[0]);
+        sound.onend = function(e) {
+            URL.revokeObjectURL(this.src);
+        }
+        }
     </script>
 @endpush

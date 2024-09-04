@@ -50,11 +50,17 @@ class ArtistController extends Controller
             $request['slug'] = Str::slug($request->name).'-'.$i;
             $i++;
         }
+        if ($request->status == 'on') {
+            $status =  1;
+        } else {
+            $status =  0;
+        }
 
         Artist::create([
             'name' => $request->name,
             'description' => $request->description,
             'slug' => $request->slug,
+            'status' => $status,
         ]);
 
         return back()->with('success', 'Artist Created Successfully');

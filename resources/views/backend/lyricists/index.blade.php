@@ -72,9 +72,11 @@
 
                                         </td>
                                         <td class="text-center">
-                                            <button class="border-0" onclick="deleteLyricist(this)"
+                                            <button class="border-0 btn" href="#" data-id="{{ $lyricist->id }}"><i
+                                                class="fa fa-pencil text-secondary fa-lg"></i></button>
+                                            <button class="border-0 btn" onclick="deleteLyricist(this)"
                                                 data-id="{{ $lyricist->id }}">
-                                                <i class="far fa-trash-can text-danger"></i>
+                                                <i class="fa fa-trash-can text-danger fa-lg"></i>
                                             </button>
                                         </td>
                                     </tr>
@@ -94,11 +96,11 @@
                             @csrf
                             <div class="mb-3">
                                 <label for="name" class="form-label">Name</label>
-                                <input type="text" name="name" id="name" class="form-control">
+                                <input type="text" name="name" id="name" class="form-control" placeholder="Enter name">
                             </div>
                             <div class="mb-3">
                                 <label for="description" class="form-label">Description</label>
-                                <textarea name="description" id="description" cols="30" rows="3" class="form-control"></textarea>
+                                <textarea name="description" id="description" cols="30" rows="3" class="form-control" placeholder="Enter description"></textarea>
                             </div>
                             <div class="mb-3">
                                 <label for="image" class="form-label">Image</label>
@@ -108,6 +110,11 @@
 
                             <div class="mb-3">
                                 <img src="https://placehold.co/100" id="image_preview" alt="" width="100">
+                            </div>
+
+                            <div class="mb-3 form-check form-switch">
+                                <label for="status" class="form-label">Active</label>
+                                <input type="checkbox" name="status" id="status" class="form-check-input">
                             </div>
                             <div>
                                 <button class="btn btn-primary" type="submit">Submit</button>
