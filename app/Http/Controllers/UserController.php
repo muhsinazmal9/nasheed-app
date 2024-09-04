@@ -66,15 +66,43 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-       
+       return view('backend.users.edit', compact('user'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, User $user)
     {
-        //
+        $request->validate([
+            'name' => 'required',
+            'email' => 'required|email|unique:users,email,' . $user->id,
+        ]);
+
+        if ($request->status == 'on') {
+            $status = 1;
+        }
+        else{
+            $status = 0;
+        }
+
+        if($request->password != null){
+            $user->update([
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => bcrypt($request->password),
+                'status' => $status,
+            ]);
+        }
+        else{
+            $user->update([
+                'name' => $request->name,
+                'email' => $request->email,
+                'status' => $status,
+            ]);
+        }
+
+        return redirect()->route('users.index')->with('success', 'User Updated Successfully');
     }
 
     /**

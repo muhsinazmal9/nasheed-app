@@ -63,8 +63,8 @@
                                             </div>
                                         </td>
                                         <td class="text-center">
-                                            <button class="border-0 btn btn-sm" href="#" data-id="{{ $user->id }}"><i
-                                                    class="fa fa-pencil text-secondary fa-xl"></i></button>
+                                            <a href="{{route('users.edit', $user->id)}}" class="border-0 btn btn-sm" href="#" ><i
+                                                    class="fa fa-pencil text-secondary fa-xl"></i></a>
                                             <button class="border-0 btn btn-sm " href="#" onclick="deleteUser(this)"
                                                 data-id="{{ $user->id }}"><i
                                                     class="far fa-trash-can text-danger fa-xl"></i></button>
