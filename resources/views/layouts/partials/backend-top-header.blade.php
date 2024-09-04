@@ -48,7 +48,7 @@
                             <span class="badge rounded-pill bg-primary ms-2">1</span>
                         </a>
                         <a class="dropdown-item d-flex align-items-center justify-content-between"
-                            href="javascript:void(0)">
+                            href="{{route('profile.index')}}">
                             <span class="fs-sm fw-medium">Settings</span>
                         </a>
                     </div>
@@ -58,13 +58,14 @@
                             href="op_auth_lock.html">
                             <span class="fs-sm fw-medium">Lock Account</span>
                         </a>
-                        <a class="dropdown-item d-flex align-items-center justify-content-between"
+                        <form method="POST" action="{{ route('logout') }}">
+                            @csrf
+                            <a class="dropdown-item d-flex align-items-center justify-content-between"
                             href="{{ route('logout') }}"
-                            onclick="event.preventDefault();
-                            document.getElementById('logout-form').submit();">
-                            <span class="fs-sm fw-medium">Log Out</span>
-                        </a>
-                        <form id="logout-form" method="POST" action="{{ route('logout') }}" style="display: none;">
+                            onclick="event.preventDefault(); this.closest('form').submit();">
+                                <span class="fs-sm fw-medium">Log Out</span>
+                            </a>
+                        </form>
                     </div>
                 </div>
             </div>

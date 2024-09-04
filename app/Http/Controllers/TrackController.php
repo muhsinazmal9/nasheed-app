@@ -2,24 +2,28 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Track;
+use App\Models\Artist;
 use Illuminate\Http\Request;
+use Illuminate\Contracts\View\View;
 
-class ProfileController extends Controller
+class TrackController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return view('backend.profile.index');
+        return view('backend.tracks.index');
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(): View
     {
-        //
+        $artists = Artist::all();
+        return view('backend.tracks.create', compact('artists'));
     }
 
     /**
@@ -33,7 +37,7 @@ class ProfileController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Track $track)
     {
         //
     }
@@ -41,7 +45,7 @@ class ProfileController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Track $track)
     {
         //
     }
@@ -49,7 +53,7 @@ class ProfileController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Track $track)
     {
         //
     }
@@ -57,7 +61,7 @@ class ProfileController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Track $track)
     {
         //
     }

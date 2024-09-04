@@ -11,13 +11,13 @@
             <div class="d-flex flex-column flex-sm-row justify-content-sm-between align-items-sm-center py-2">
                 <div class="flex-grow-1">
                     <h1 class="h3 fw-bold mb-1">
-                        Artists
+                        Users
                     </h1>
                 </div>
                 <nav class="flex-shrink-0 mt-3 mt-sm-0 ms-sm-3" aria-label="breadcrumb">
                     <ol class="breadcrumb breadcrumb-alt">
                         <li class="breadcrumb-item">
-                            <a class="link-fx" href="javascript:void(0)">Artists</a>
+                            <a class="link-fx" href="javascript:void(0)">Users</a>
                         </li>
                         <li class="breadcrumb-item" aria-current="page">
                             List
@@ -33,43 +33,40 @@
                 <div class="block block-rounded">
                     <div class="block-header block-header-default">
                         <h3 class="block-title">
-                            Artist List
+                            Users List
                         </h3>
                     </div>
                     <div class="block-content block-content-full overflow-x-auto">
-                        <table class="table table-bordered table-striped table-vcenter" id="artistsTable">
+                        <table class="table table-bordered table-striped table-vcenter" id="usersTable">
                             <thead>
                                 <tr>
                                     <th class="text-center">SL</th>
                                     <th>Name</th>
-                                    <th>Description</th>
-                                    <th>Image</th>
+                                    <th>Email</th>
                                     <th>Status</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($artists as $key => $artist)
+                                @foreach ($users as $key => $user)
                                     <tr>
                                         <td class="text-center fs-sm">{{ $key + 1 }}</td>
-                                        <td class="fw-semibold fs-sm">{{ $artist->name }}</td>
-                                        <td class="fw-semibold fs-sm">{{ $artist->description }}</td>
-                                        <td class="fs-sm">
-                                            <img src="" alt="">
-                                        </td>
+                                        <td class="fw-semibold fs-sm">{{ $user->name }}</td>
+                                        <td class="fw-semibold fs-sm">{{ $user->email }}</td>
+
                                         <td>
                                             <div class="form-check form-switch">
                                                 <input class="form-check-input" type="checkbox"
-                                                    {{ $artist->status == 1 ? 'checked' : '' }} name="status"
-                                                    data-id="{{ $artist->id }}" data-status="{{ $artist->status }}"
-                                                    onchange="updateArtistStatus(this)">
+                                                    {{ $user->status == 1 ? 'checked' : '' }} name="status"
+                                                    data-id="{{ $user->id }}" data-status="{{ $user->status }}"
+                                                    onchange="updateUserStatus(this)">
                                             </div>
                                         </td>
                                         <td class="text-center">
-                                            <button class="border-0 btn btn-sm" href="#" data-id="{{ $artist->id }}"><i
-                                                    class="fa fa-pencil text-secondary fa-xl"></i></button>
-                                            <button class="border-0 btn btn-sm " href="#" onclick="deleteArtist(this)"
-                                                data-id="{{ $artist->id }}"><i
+                                            <a href="{{route('users.edit', $user->id)}}" class="border-0 btn btn-sm" href="#" ><i
+                                                    class="fa fa-pencil text-secondary fa-xl"></i></a>
+                                            <button class="border-0 btn btn-sm " href="#" onclick="deleteUser(this)"
+                                                data-id="{{ $user->id }}"><i
                                                     class="far fa-trash-can text-danger fa-xl"></i></button>
                                         </td>
                                     </tr>
@@ -83,28 +80,34 @@
             <div class="col-lg-4">
                 <div class="block block-rounded">
                     <div class="block-header block-header-default">
-                        <h3 class="block-title">Add Artist</h3>
+                        <h3 class="block-title">Add User</h3>
                     </div>
                     <div class="block-content block-content-full overflow-x-auto">
-                        <form action="{{ route('artists.store') }}" method="POST" enctype="multipart/form-data">
+                        <form action="{{ route('users.store') }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             <div class="mb-3">
                                 <label for="name" class="form-label">Name</label>
                                 <input type="text" name="name" id="name" class="form-control" placeholder="Enter name">
-                            </div>
-                            <div class="mb-3">
-                                <label for="description" class="form-label">Description</label>
-                                <textarea name="description" id="description" cols="30" rows="3" class="form-control" placeholder="Enter description"></textarea>
-                            </div>
-                            <div class="mb-3">
-                                <label for="image" class="form-label">Image</label>
-                                <input type="file" class="form-control" name="image" id="image"
-                                    onchange="document.getElementById('image_preview').src = window.URL.createObjectURL(this.files[0])">
+                                @error('name')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
                             </div>
 
                             <div class="mb-3">
-                                <img src="https://placehold.co/100" id="image_preview" alt="" width="100">
+                                <label for="email" class="form-label">Email</label>
+                                <input type="email" name="email" id="email" class="form-control" placeholder="Enter email">
+                                @error('email')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
                             </div>
+                            <div class="mb-3">
+                                <label for="password" class="form-label">Password</label>
+                                <input type="password" name="password" id="password" class="form-control" placeholder="Enter password">
+                                @error('password')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+
                             <div class="mb-3 form-check form-switch">
                                 <label for="status" class="form-label">Active</label>
                                 <input type="checkbox" name="status" id="status" class="form-check-input">
@@ -135,8 +138,8 @@
     <script src="{{ asset('assets') }}/js/pages/be_tables_datatables.min.js"></script>
 
     <script>
-        $('#artistsTable').DataTable();
-        function deleteArtist(button) {
+        $('#usersTable').DataTable();
+        function deleteUser(button) {
             const id = $(button).data('id');
             Swal.fire({
                 title: "Are you sure?",
@@ -149,7 +152,7 @@
             }).then((result) => {
                 if (result.isConfirmed) {
 
-                    let url = "{{ route('artists.destroy', ':id') }}";
+                    let url = "{{ route('users.destroy', ':id') }}";
                     url = url.replace(':id', id);
                     let method = "DELETE";
                     let token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
@@ -173,7 +176,7 @@
             });
         }
 
-        function updateArtistStatus(element) {
+        function updateUserStatus(element) {
             Swal.fire({
                 title: "Are you sure?",
                 text: "You won't be able to revert this!",
@@ -184,16 +187,16 @@
                 confirmButtonText: "Yes, update it!"
             }).then((result) => {
                 if (result.isConfirmed) {
-                    updateArtistStatusAjax(element);
+                    updateUserStatusAjax(element);
                 } else {
                     element.checked = !element.checked;
                 }
             })
         }
 
-        function updateArtistStatusAjax(element) {
+        function updateUserStatusAjax(element) {
             const id = $(element).data('id');
-            let url = "{{ route('artists.status.update', ':id') }}";
+            let url = "{{ route('users.status.update', ':id') }}";
             url = url.replace(':id', id);
 
             $.ajax({

@@ -122,13 +122,13 @@
                                                     onchange="updateDedicationStatus(this)">
                                             </div>
                                         </td>
-                                        <td class="text-center">
-                                            <button class="border-0 btn btn-sm" href="#"
+                                        <td class="text-center d-flex">
+                                            <button class="border-0 btn" href="#"
                                                 data-id="{{ $dedication->id }}"><i
-                                                    class="fa fa-pencil text-secondary"></i></button>
-                                            <button class="border-0 btn btn-sm " href="#"
+                                                    class="fa fa-pencil text-secondary fa-lg"></i></button>
+                                            <button class="border-0 btn" href="#"
                                                 onclick="deleteDedication(this)" data-id="{{ $dedication->id }}"><i
-                                                    class="far fa-trash-can text-danger"></i></button>
+                                                    class="far fa-trash-can text-danger fa-lg"></i></button>
                                         </td>
                                     </tr>
                                 @endforeach

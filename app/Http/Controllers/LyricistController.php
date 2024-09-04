@@ -49,10 +49,16 @@ class LyricistController extends Controller
             $i++;
         }
 
+        if ($request->status == 'on') {
+            $status =  1;
+        } else {
+            $status =  0;
+        }
         lyricist::create([
             'name' => $request->name,
             'description' => $request->description,
             'slug' => $request->slug,
+            'status' => $status,
         ]);
 
         return back()->with('success', 'lyricists Created Successfully');
