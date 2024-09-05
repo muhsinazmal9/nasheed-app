@@ -63,4 +63,15 @@ class AuthController extends Controller
 
         return success('Logout successful');
     }
+
+
+    public function getAuthenticatedUser(Request $request): JsonResponse
+    {
+        if (!Auth::guard('sanctum')->check()) {
+            return error('Not logged in', [], 401);
+        }
+
+        $user = $request->user();
+        return success('User retrieved successfully', new UserResource($user));
+    }
 }
