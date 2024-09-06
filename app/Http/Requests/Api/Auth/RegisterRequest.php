@@ -25,7 +25,7 @@ class RegisterRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
+            'email' => 'required|string|email:rfc,dns|max:255|unique:users,email',
             // Password must be at least 8 characters long, contain at least one uppercase letter,
             // one lowercase letter, one number, and one special character.
             'password' => [
