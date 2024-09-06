@@ -55,7 +55,7 @@
                                         <td class="fw-semibold fs-sm">{{ $artist->name }}</td>
                                         <td class="fw-semibold fs-sm">{{ $artist->description }}</td>
                                         <td class="fs-sm">
-                                            <img src="" alt="">
+                                            <img src="{{asset($artist->image)}}" width="50px" alt="">
                                         </td>
                                         <td>
                                             <div class="form-check form-switch">
@@ -89,12 +89,18 @@
                         <form action="{{ route('artists.store') }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             <div class="mb-3">
-                                <label for="name" class="form-label">Name</label>
+                                <label for="name" class="form-label">Name <span class="text-danger">*</span> </label>
                                 <input type="text" name="name" id="name" class="form-control" placeholder="Enter name">
+                                @error('name')
+                                    <span class="text-danger">{{$message}}</small>
+                                @enderror
                             </div>
                             <div class="mb-3">
-                                <label for="description" class="form-label">Description</label>
+                                <label for="description" class="form-label">Description <span class="text-danger">*</span></label>
                                 <textarea name="description" id="description" cols="30" rows="3" class="form-control" placeholder="Enter description"></textarea>
+                                @error('name')
+                                    <span class="text-danger">{{$message}}</small>
+                                @enderror
                             </div>
                             <div class="mb-3">
                                 <label for="image" class="form-label">Image</label>

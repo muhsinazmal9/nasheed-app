@@ -6,9 +6,11 @@ use App\Models\Lyricist;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use App\Traits\ImageSaveTrait;
 
 class LyricistController extends Controller
 {
+    use ImageSaveTrait;
     /**
      * Display a listing of the resource.
      */
@@ -54,11 +56,16 @@ class LyricistController extends Controller
         } else {
             $status =  0;
         }
+
+        if ($request->hasFile('image')) {
+            $image_name = $this->saveImage('lyricist', $request->file('image'), 400, 400);
+        }
         lyricist::create([
             'name' => $request->name,
             'description' => $request->description,
             'slug' => $request->slug,
             'status' => $status,
+            'image' => $image_name,
         ]);
 
         return back()->with('success', 'lyricists Created Successfully');

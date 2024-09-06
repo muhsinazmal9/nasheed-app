@@ -27,29 +27,27 @@
           <h3 class="block-title">Profile</h3>
         </div>
         <div class="block-content">
-          <form action="be_pages_projects_edit.html" method="POST" enctype="multipart/form-data" onsubmit="return false;">
+          <form action="{{route('profile.update' , auth()->user()->id)}}" method="POST" enctype="multipart/form-data">
+            @csrf
+            @method('PUT')
             <div class="row push">
               <div class="col-lg-8 col-xl-5 m-auto">
                 <div class="mb-4">
-                  <label class="form-label" for="one-profile-edit-username">Username</label>
-                  <input type="text" class="form-control" id="one-profile-edit-username" name="one-profile-edit-username" placeholder="Enter your username.." value="john.parker">
-                </div>
-                <div class="mb-4">
                   <label class="form-label" for="one-profile-edit-name">Name</label>
-                  <input type="text" class="form-control" id="one-profile-edit-name" name="one-profile-edit-name" placeholder="Enter your name.." value="John Parker">
+                  <input type="text" class="form-control" id="name" name="name" placeholder="Enter your name.." value="{{auth()->user()->name}}">
                 </div>
                 <div class="mb-4">
                   <label class="form-label" for="one-profile-edit-email">Email Address</label>
-                  <input type="email" class="form-control" id="one-profile-edit-email" name="one-profile-edit-email" placeholder="Enter your email.." value="john.parker@example.com">
+                  <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email.." value="{{auth()->user()->email}}">
                 </div>
                 <div class="mb-4">
                   <label class="form-label">Your Avatar</label>
                   <div class="mb-4">
-                    <img class="img-avatar" src="https://placehold.co/100" alt="">
+                    <img class="img-avatar" id="image" src="{{asset('uploads')}}/profile/{{auth()->user()->image}}" alt="">
                   </div>
                   <div class="mb-4">
-                    <label for="one-profile-edit-avatar" class="form-label">Choose a new avatar</label>
-                    <input class="form-control" type="file" id="one-profile-edit-avatar">
+                    <label for="image" class="form-label">Choose a new avatar</label>
+                    <input class="form-control" id="image" type="file" name="image" onchange="document.getElementById('image').src = window.URL.createObjectURL(this.files[0])">
                   </div>
                 </div>
                 <div class="mb-4">

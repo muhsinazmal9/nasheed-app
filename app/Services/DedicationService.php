@@ -4,9 +4,13 @@ namespace App\Services;
 
 use App\Models\Dedication;
 use Illuminate\Support\Str;
+use App\Http\Requests\StoreDedicationRequest;
+use App\Http\Requests\UpdateDedicationRequest;
+use App\Traits\ImageSaveTrait;
 
 class DedicationService
 {
+    use ImageSaveTrait;
     /**
      * Create a new class instance.
      */
@@ -16,23 +20,30 @@ class DedicationService
     }
 
 
-    public function createDedication(array $data)
+    public function createDedication(StoreDedicationRequest $request)
     {
 
         $inputs = [];
-        $inputs['status'] = (bool) ($data['status'] ?? false);
-        $inputs['slug'] = Str::slug($data['name']);
+        $inputs['status'] = (bool) ($request['status'] ?? false);
+        $inputs['slug'] = Str::slug($request['name']);
 
         $count = 1;
         while (Dedication::where('slug', $inputs['slug'])->exists()) {
-            $inputs['slug'] = Str::slug($data['name']) . '-' . $count;
+            $inputs['slug'] = Str::slug($request['name']) . '-' . $count;
             $count++;
         }
 
-        $data = array_merge($data, $inputs);
+        if ($request->hasFile('image')) {
+            $image_name = $this->saveImage('dedication', $request->file('image'), 400, 400);
+            $inputs['image'] = $image_name;
+        }
+
+        $request = array_merge($request->all(), $inputs);
+
+
 
         try {
-            $dedication = Dedication::create($data);
+            $dedication = Dedication::create($request);
 
             return $dedication;
         } catch (\Exception $e) {
@@ -41,15 +52,15 @@ class DedicationService
         }
     }
 
-    public function updateDedication(Dedication $dedication, array $data)
+    public function updateDedication(Dedication $dedication, UpdateDedicationRequest $request)
     {
         $inputs = [];
-        $inputs['status'] = (bool) ($data['status'] ?? false);
+        $inputs['status'] = (bool) ($request['status'] ?? false);
 
-        $data = array_merge($data, $inputs);
+        $request = array_merge($request, $inputs);
 
         try {
-            $dedication->update($data);
+            $dedication->update($request);
 
             return $dedication;
         } catch (\Exception $e) {

@@ -60,7 +60,7 @@
                                         <td class="fw-semibold fs-sm">{{ $lyricist->name }}</td>
                                         <td class="fw-semibold fs-sm">{{ $lyricist->description }}</td>
                                         <td class="fs-sm">
-                                            <img src="" alt="">
+                                            <img src="{{ asset($lyricist->image) }}" alt="" width="50">
                                         </td>
                                         <td>
                                             <div class="form-check form-switch">

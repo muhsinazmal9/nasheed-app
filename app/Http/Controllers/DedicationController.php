@@ -9,9 +9,11 @@ use App\Services\DedicationService;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
+use App\Traits\ImageSaveTrait;
 
 class DedicationController extends Controller
 {
+    use ImageSaveTrait;
     public function __construct(
         private DedicationService $dedicationService
     )
@@ -32,7 +34,7 @@ class DedicationController extends Controller
      */
     public function store(StoreDedicationRequest $request): RedirectResponse
     {
-        $createdDedication = $this->dedicationService->createDedication($request->validated());
+        $createdDedication = $this->dedicationService->createDedication($request);
 
         if (!$createdDedication) {
             return redirect()->back()->with('error', 'Dedication Creation Failed');
