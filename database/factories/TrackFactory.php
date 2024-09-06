@@ -20,6 +20,7 @@ class TrackFactory extends Factory
             'title' => $this->faker->sentence(3),
             'description' => $this->faker->sentence(10),
             'lyricist_id' => 1,
+            'dedication_id' => 1,
             'slug' => $this->faker->slug(),
             'cover_image' => $this->faker->imageUrl(240, 240),
             'audio_file' => 'uploads/tracks/1.mp3',

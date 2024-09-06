@@ -25,12 +25,8 @@ class TrackSeeder extends Seeder
             $inserted = Track::factory()->create($track['data']);
 
             if ($inserted) {
-                foreach ($track['artists'] as $artist) {
-                    DB::table('artist_track')->insert([
-                        'track_id' => $inserted->id,
-                        'artist_id' => $artist,
-                    ]);
-                }
+                $inserted->artists()->detach();
+                $inserted->artists()->attach($track['artists']);
             }
         }
 
@@ -46,8 +42,9 @@ class TrackSeeder extends Seeder
                 'data' => [
                     'title' => '12 Rabiul Auwale Udoy',
                     'slug' => '12-rabiul-auwale-udoy',
-                    'lyricist_id' => 1,
-                    'audio_file' => 'uploads/tracks/1.mp3',
+                    'lyricist_id' => 3,
+                    'dedication_id' => rand(1, 10),
+                    'audio_file' => 'uploads/tracks/audio_files/1.mp3',
                 ],
                 'artists' => [10],
             ],
@@ -55,8 +52,9 @@ class TrackSeeder extends Seeder
                 'data' => [
                     'title' => 'Hire Manik Jor',
                     'slug' => 'hire-manik-jor',
-                    'lyricist_id' => 2,
-                    'audio_file' => 'uploads/tracks/2.mp3',
+                    'lyricist_id' => 3,
+                    'dedication_id' => rand(1, 10),
+                    'audio_file' => 'uploads/tracks/audio_files/2.mp3',
                 ],
                 'artists' => [4],
             ],
@@ -64,8 +62,9 @@ class TrackSeeder extends Seeder
                 'data' => [
                     'title' => 'Didarer ashile pala',
                     'slug' => 'didarer-ashile-pala',
-                    'lyricist_id' => 2,
-                    'audio_file' => 'uploads/tracks/3.mp3',
+                    'lyricist_id' => 3,
+                    'dedication_id' => rand(1, 10),
+                    'audio_file' => 'uploads/tracks/audio_files/3.mp3',
                 ],
                 'artists' => [4],
             ],
@@ -74,6 +73,7 @@ class TrackSeeder extends Seeder
                     'title' => 'Shahzada Qibla ashben Aaj',
                     'slug' => 'shahzada-qibla-ashben-aaj',
                     'lyricist_id' => 3,
+                    'dedication_id' => rand(1, 10),
                     'audio_file' => 'uploads/tracks/4.mp3',
                 ],
                 'artists' => [2],
@@ -82,8 +82,9 @@ class TrackSeeder extends Seeder
                 'data' => [
                     'title' => 'Aqaji kodom Pake Odhom',
                     'slug' => 'aqaji-kodom-pake-odhom',
-                    'lyricist_id' => 2,
-                    'audio_file' => 'uploads/tracks/5.mp3',
+                    'lyricist_id' => 3,
+                    'dedication_id' => rand(1, 10),
+                    'audio_file' => 'uploads/tracks/audio_files/5.mp3',
                 ],
                 'artists' => [4],
             ],
@@ -91,8 +92,9 @@ class TrackSeeder extends Seeder
                 'data' => [
                     'title' => 'Shafayat Koriyen Habibi',
                     'slug' => 'shafayat-koriyen-habibi',
-                    'lyricist_id' => 2,
-                    'audio_file' => 'uploads/tracks/6.mp3',
+                    'lyricist_id' => 3,
+                    'dedication_id' => rand(1, 10),
+                    'audio_file' => 'uploads/tracks/audio_files/6.mp3',
                 ],
                 'artists' => [4],
             ],
@@ -100,8 +102,9 @@ class TrackSeeder extends Seeder
                 'data' => [
                     'title' => 'Shob i Amar Dosh',
                     'slug' => 'shob-i-amar-dosh',
-                    'lyricist_id' => 2,
-                    'audio_file' => 'uploads/tracks/7.mp3',
+                    'lyricist_id' => 3,
+                    'dedication_id' => rand(1, 10),
+                    'audio_file' => 'uploads/tracks/audio_files/7.mp3',
                 ],
                 'artists' => [4],
             ],

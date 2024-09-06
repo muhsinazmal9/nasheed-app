@@ -16,6 +16,10 @@ class Artist extends Model
         'status' => 'boolean'
     ];
 
+    public function tracks(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Track::class);
+    }
 
     public function scopeActive($query)
     {

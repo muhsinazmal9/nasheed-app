@@ -1,9 +1,11 @@
 <?php
 
-use App\Http\Controllers\Api\V1\ArtistController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\V1\AuthController;
+use App\Http\Controllers\Api\V1\TrackController;
+use App\Http\Controllers\Api\V1\ArtistController;
+use App\Http\Controllers\Api\V1\LyricistController;
 use App\Http\Controllers\Api\V1\DedicationController;
 
 // Authentication related APIs
@@ -15,17 +17,10 @@ Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanc
 /**
  * Public APIs
  */
-
-Route::controller(DedicationController::class)->group(function () {
-    Route::get('/dedications', 'index');
-    Route::get('/dedications/{dedication}', 'show');
-});
-
-
-Route::controller(ArtistController::class)->group(function () {
-    Route::get('/artists', 'index');
-    Route::get('/artists/{artist}', 'show');
-});
+Route::apiResource('dedications', DedicationController::class)->only(['index', 'show']);
+Route::apiResource('artists', ArtistController::class)->only(['index', 'show']);
+Route::apiResource('lyricists', LyricistController::class)->only(['index', 'show']);
+Route::apiResource('tracks', TrackController::class)->only(['index', 'show']);
 
 /**
  * Private APIs
