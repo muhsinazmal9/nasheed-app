@@ -29,53 +29,53 @@ class ArtistSeeder extends Seeder
         return [
             [
                 'slug' => 'ruhul-hasan',
-                'name' => 'রুহুল হাসান',
-                'description' => 'রুহুল হাসান',
+                'name' => 'Ruhul Hasan',
+                'description' => 'Ruhul Hasan',
             ],
             [
                 'slug' => 'mabrurul-haque-fuad',
-                'name' => 'মাবরুরুল হক ফুয়াদ',
-                'description' => 'মাবরুরুল হক ফুয়াদ',
+                'name' => 'Mabrurul Haque Fuad',
+                'description' => 'Mabrurul Haque Fuad',
             ],
             [
                 'slug' => 'hafiz-hamidullah',
-                'name' => 'হাফিজ হামিদুল্লাহ',
-                'description' => 'হাফিজ হামিদুল্লাহ',
+                'name' => 'Hafiz Hamidullah',
+                'description' => 'Hafiz Hamidullah',
             ],
             [
                 'slug' => 'rohit-hassan',
-                'name' => 'রহিত হাসান',
-                'description' => 'রহিত হাসান',
+                'name' => 'Rohit Hassan',
+                'description' => 'Rohit Hassan',
             ],
             [
                 'slug' => 'imtiyaz-hussain',
-                'name' => 'ইমতিয়াজ হুসাইন',
-                'description' => 'ইমতিয়াজ হুসাইন',
+                'name' => 'Imtiyaz Hussain',
+                'description' => 'Imtiyaz Hussain',
             ],
             [
                 'slug' => 'anisuzzaman',
-                'name' => 'আনিসুজ্জামান',
-                'description' => 'আনিসুজ্জামান',
+                'name' => 'Anisuzzaman',
+                'description' => 'Anisuzzaman',
             ],
             [
                 'slug' => 'mashruf-ahmad',
-                'name' => 'মাশরুফ আহমদ',
-                'description' => 'মাশরুফ আহমদ',
+                'name' => 'Mashruf Ahmad',
+                'description' => 'Mashruf Ahmad',
             ],
             [
                 'slug' => 'tareq-hussain',
-                'name' => 'তারেক হুসাইন',
-                'description' => 'তারেক হুসাইন',
+                'name' => 'Tareq Hussain',
+                'description' => 'Tareq Hussain',
             ],
             [
                 'slug' => 'harunur-rashid',
-                'name' => 'হারুনুর রশিদ',
-                'description' => 'হারুনুর রশিদ',
+                'name' => 'Harunur Rashid',
+                'description' => 'Harunur Rashid',
             ],
             [
                 'slug' => 'muhammadullah',
-                'name' => 'মুহাম্মাদুল্লাহ',
-                'description' => 'মুহাম্মদুল্লাহ',
+                'name' => 'Muhammadullah',
+                'description' => 'Muhammadullah',
             ]
         ];
     }

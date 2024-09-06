@@ -22,14 +22,16 @@ class TrackFactory extends Factory
             'lyricist_id' => 1,
             'slug' => $this->faker->slug(),
             'cover_image' => $this->faker->imageUrl(240, 240),
-            'audio_file' => null,
-            'duration' => null,
-            'like_count' => 0,
-            'view_count' => 0,
+            'audio_file' => 'uploads/tracks/1.mp3',
+            'like_count' => rand(25, 50),
+            'views_count' => rand(25, 100),
             'status' => true,
             'is_public' => true,
             'is_promo' => false,
             'is_featured' => true,
+            'published_at' => now(),
+            'created_at' => now(),
+            'updated_at' => now(),
         ];
     }
 }
