@@ -74,7 +74,7 @@ class TrackSeeder extends Seeder
                     'slug' => 'shahzada-qibla-ashben-aaj',
                     'lyricist_id' => 3,
                     'dedication_id' => rand(1, 10),
-                    'audio_file' => 'uploads/tracks/4.mp3',
+                    'audio_file' => 'uploads/tracks/audio_files/4.mp3',
                 ],
                 'artists' => [2],
             ],
