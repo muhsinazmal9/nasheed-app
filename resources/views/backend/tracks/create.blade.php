@@ -3,10 +3,8 @@
 @section('title', 'Create Track')
 
 @push('style')
-    {{-- TODO: remove cdn and replace with local --}}
-    <link href="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/css/tom-select.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 @endpush
-
 @section('content')
     <div class="bg-body-light">
         <div class="content content-full">
@@ -44,13 +42,8 @@
                                 <input type="text" name="title" id="title" class="form-control" required placeholder="Enter track title">
                             </div>
                             <div class="mb-4">
-                                <label for="artist_id" class="form-label">Lyricist</label>
-                                <select name="artist_id" id="artist_id" required>
-                                    <option value="">Select Lyricist</option>
-                                    <!-- Populate with artists -->
-                                    @foreach ($artists as $artist)
-                                        <option value="{{ $artist->id }}">{{ $artist->name }}</option>
-                                    @endforeach
+                                <label for="artist_id" class="form-label">Artists</label>
+                                <select name="artist_id" id="artist_id" class="form-select" required>
                                 </select>
                             </div>
                             <div class="mb-4">
@@ -105,15 +98,34 @@
 @endsection
 
 @push('script')
-    <script src="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/js/tom-select.complete.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script>
-        new TomSelect('#artist_id', {
-            persist: false,
-            sortField: {
-                field: "text",
-                direction: "asc"
-            },
-            create: false
+        $('#artist_id').select2({
+            placeholder: 'Select Artists',
+            allowClear: true,
+            minimumInputLength: 1,
+            ajax: {
+                url: "{{ route('artists.search') }}",
+                dataType: 'json',
+                type: 'GET',
+                delay: 250,
+                data: function (params) {
+                    return {
+                        q: params.term
+                    };
+                },
+                processResults: function (response) {
+                    return {
+                        results:  $.map(response.data, function (item) {
+                            return {
+                                text: item.name,
+                                id: item.id
+                            }
+                        })
+                    };
+                },
+                cache: true
+            }
         });
     </script>
     <script type="text/javascript">

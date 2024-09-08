@@ -21,6 +21,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::controller(ArtistController::class)->name('artists.')->prefix('artists')->group(function () {
         Route::post('/update-status/{artist}', 'updateStatus')->name('status.update');
+        Route::get('/search', 'search')->name('search');
     });
 
     Route::controller(LyricistController::class)->name('lyricists.')->prefix('lyricists')->group(function () {

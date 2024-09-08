@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Track;
 use App\Models\Artist;
+use App\Models\Lyricist;
 use Illuminate\Http\Request;
 use Illuminate\Contracts\View\View;
 
@@ -22,8 +23,9 @@ class TrackController extends Controller
      */
     public function create(): View
     {
-        $artists = Artist::all();
-        return view('backend.tracks.create', compact('artists'));
+        $artists = Artist::active()->get();
+        $lyricists = Lyricist::active()->get();
+        return view('backend.tracks.create', compact('artists', 'lyricists'));
     }
 
     /**
