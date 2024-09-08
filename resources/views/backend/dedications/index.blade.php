@@ -123,9 +123,8 @@
                                             </div>
                                         </td>
                                         <td class="text-center d-flex">
-                                            <button class="border-0 btn" href="#"
-                                                data-id="{{ $dedication->id }}"><i
-                                                    class="fa fa-pencil text-secondary fa-lg"></i></button>
+                                            <a href="{{ route('dedications.edit', $dedication->id) }}" class="border-0 btn"><i
+                                                    class="fa fa-pencil text-secondary fa-lg"></i></a>
                                             <button class="border-0 btn" href="#"
                                                 onclick="deleteDedication(this)" data-id="{{ $dedication->id }}"><i
                                                     class="far fa-trash-can text-danger fa-lg"></i></button>

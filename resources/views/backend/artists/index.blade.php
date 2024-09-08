@@ -29,57 +29,6 @@
     </div>
     <div class="content">
         <div class="row">
-            <div class="col-lg-8">
-                <div class="block block-rounded">
-                    <div class="block-header block-header-default">
-                        <h3 class="block-title">
-                            Artist List
-                        </h3>
-                    </div>
-                    <div class="block-content block-content-full overflow-x-auto">
-                        <table class="table table-bordered table-striped table-vcenter" id="artistsTable">
-                            <thead>
-                                <tr>
-                                    <th class="text-center">SL</th>
-                                    <th>Name</th>
-                                    <th>Description</th>
-                                    <th>Image</th>
-                                    <th>Status</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($artists as $key => $artist)
-                                    <tr>
-                                        <td class="text-center fs-sm">{{ $key + 1 }}</td>
-                                        <td class="fw-semibold fs-sm">{{ $artist->name }}</td>
-                                        <td class="fw-semibold fs-sm">{{ $artist->description }}</td>
-                                        <td class="fs-sm">
-                                            <img src="{{asset($artist->image)}}" width="50px" alt="">
-                                        </td>
-                                        <td>
-                                            <div class="form-check form-switch">
-                                                <input class="form-check-input" type="checkbox"
-                                                    {{ $artist->status == 1 ? 'checked' : '' }} name="status"
-                                                    data-id="{{ $artist->id }}" data-status="{{ $artist->status }}"
-                                                    onchange="updateArtistStatus(this)">
-                                            </div>
-                                        </td>
-                                        <td class="text-center">
-                                            <button class="border-0 btn btn-sm" href="#" data-id="{{ $artist->id }}"><i
-                                                    class="fa fa-pencil text-secondary fa-xl"></i></button>
-                                            <button class="border-0 btn btn-sm " href="#" onclick="deleteArtist(this)"
-                                                data-id="{{ $artist->id }}"><i
-                                                    class="far fa-trash-can text-danger fa-xl"></i></button>
-                                        </td>
-                                    </tr>
-                                @endforeach
-
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
             <div class="col-lg-4">
                 <div class="block block-rounded">
                     <div class="block-header block-header-default">
@@ -119,6 +68,57 @@
                                 <button class="btn btn-primary" type="submit">Submit</button>
                             </div>
                         </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-8">
+                <div class="block block-rounded">
+                    <div class="block-header block-header-default">
+                        <h3 class="block-title">
+                            Artist List
+                        </h3>
+                    </div>
+                    <div class="block-content block-content-full overflow-x-auto">
+                        <table class="table table-bordered table-striped table-vcenter" id="artistsTable">
+                            <thead>
+                                <tr>
+                                    <th class="text-center">SL</th>
+                                    <th>Name</th>
+                                    <th>Description</th>
+                                    <th>Image</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($artists as $key => $artist)
+                                    <tr>
+                                        <td class="text-center fs-sm">{{ $key + 1 }}</td>
+                                        <td class="fw-semibold fs-sm">{{ $artist->name }}</td>
+                                        <td class="fw-semibold fs-sm">{{ $artist->description }}</td>
+                                        <td class="fs-sm">
+                                            <img src="{{asset($artist->image)}}" width="50px" alt="">
+                                        </td>
+                                        <td>
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox"
+                                                    {{ $artist->status == 1 ? 'checked' : '' }} name="status"
+                                                    data-id="{{ $artist->id }}" data-status="{{ $artist->status }}"
+                                                    onchange="updateArtistStatus(this)">
+                                            </div>
+                                        </td>
+                                        <td class="text-center">
+                                            <a class="border-0 btn btn-sm" href="{{route('artists.edit', $artist->id)}}"><i
+                                                    class="fa fa-pencil text-secondary fa-xl"></i></a>
+                                            <button class="border-0 btn btn-sm " href="#" onclick="deleteArtist(this)"
+                                                data-id="{{ $artist->id }}"><i
+                                                    class="far fa-trash-can text-danger fa-xl"></i></button>
+                                        </td>
+                                    </tr>
+                                @endforeach
+
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>

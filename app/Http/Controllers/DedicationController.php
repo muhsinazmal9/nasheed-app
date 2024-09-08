@@ -10,6 +10,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use App\Traits\ImageSaveTrait;
+use Illuminate\Http\Request;
 
 class DedicationController extends Controller
 {
@@ -56,15 +57,40 @@ class DedicationController extends Controller
      */
     public function edit(Dedication $dedication)
     {
-        //
+        return view('backend.dedications.edit', compact('dedication'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateDedicationRequest $request, Dedication $dedication)
+    public function update(Request $request, Dedication $dedication)
     {
-        //
+            $request->validate([
+                    'name' => 'required',
+                    'description' => 'required',
+                ]);
+
+            if ($request->hasFile('image')) {
+                if (!empty($dedication->image)) {
+                    $this->deleteImage(public_path('uploads/dedication/' . $dedication->image));
+                }
+
+                $image_name = $this->saveImage('dedication', $request->file('image'), 400, 400);
+
+                $dedication->update([
+                    'name' => $request->name,
+                    'description' => $request->description,
+                    'image' => $image_name,
+                ]);
+            }
+            else{
+                $dedication->update([
+                    'name' => $request->name,
+                    'description' => $request->description,
+                ]);
+            }
+
+            return redirect()->route('dedications.index')->with('success', 'Dedication Updated Successfully');
     }
 
     /**

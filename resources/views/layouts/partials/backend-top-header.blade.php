@@ -23,17 +23,17 @@
             <div class="dropdown d-inline-block ms-2">
                 <button type="button" class="btn btn-sm btn-alt-secondary d-flex align-items-center"
                     id="page-header-user-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <img class="rounded-circle" src="https://placeholder.co/100"
+                    <img class="rounded-circle" src="{{auth()->user()->image}}"
                         alt="Header Avatar" style="width: 21px;" loading="lazy">
-                    <span class="d-none d-sm-inline-block ms-2">John</span>
+                    <span class="d-none d-sm-inline-block ms-2">{{auth()->user()->name}}</span>
                     <i class="fa fa-fw fa-angle-down d-none d-sm-inline-block opacity-50 ms-1 mt-1"></i>
                 </button>
                 <div class="dropdown-menu dropdown-menu-md dropdown-menu-end p-0 border-0"
                     aria-labelledby="page-header-user-dropdown">
                     <div class="p-3 text-center bg-body-light border-bottom rounded-top">
                         <img class="img-avatar img-avatar48 img-avatar-thumb"
-                            src="https://placeholder.co/100" alt="" loading="lazy">
-                        <p class="mt-2 mb-0 fw-medium">John Smith</p>
+                            src="{{auth()->user()->image}}" alt="" loading="lazy">
+                        <p class="mt-2 mb-0 fw-medium">{{auth()->user()->name}}</p>
                         <p class="mb-0 text-muted fs-sm fw-medium">Web Developer</p>
                     </div>
                     <div class="p-2">

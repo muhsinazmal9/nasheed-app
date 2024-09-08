@@ -82,17 +82,46 @@ class LyricistController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Lyricist $lyricist)
     {
-        //
+        return view('backend.lyricists.edit', [
+            'lyricist' => $lyricist,
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Lyricist $lyricist)
     {
-        //
+        $request->validate([
+            'name' => 'required',
+            'description' => 'required',
+        ]);
+
+        if ($request->hasFile('image')) {
+            if (!empty($lyricist->image)) {
+                $this->deleteImage(public_path('uploads/lyricist/' . $lyricist->image));
+            }
+
+            $image_name = $this->saveImage('lyricist', $request->file('image'), 400, 400);
+
+            $lyricist->update([
+                'name' => $request->name,
+                'description' => $request->description,
+                'image' => $image_name,
+            ]);
+        }
+        else{
+            $lyricist->update([
+                'name' => $request->name,
+                'description' => $request->description,
+            ]);
+        }
+
+
+
+        return redirect()->route('lyricists.index')->with('success', 'Lyricist Updated Successfully');
     }
 
     /**

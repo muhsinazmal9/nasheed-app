@@ -85,17 +85,44 @@ class ArtistController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Artist $artist)
     {
-        //
+        return view('backend.artists.edit', [
+            'artist' => $artist,
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Artist $artist)
     {
-        //
+        $request->validate([
+            'name' => 'required',
+            'description' => 'required',
+        ]);
+
+        if ($request->hasFile('image')) {
+            if (!empty($artist->image)) {
+                $this->deleteImage(public_path('uploads/artist/' . $artist->image));
+            }
+
+            $image_name = $this->saveImage('artist', $request->file('image'), 400, 400);
+            $artist->update([
+                'name' => $request->name,
+                'description' => $request->description,
+                'image' => $image_name,
+            ]);
+        }
+        else {
+            $artist->update([
+                'name' => $request->name,
+                'description' => $request->description,
+            ]);
+        }
+
+        return redirect()->route('artists.index')->with('success', 'Artist Updated Successfully');
+
     }
 
     /**
