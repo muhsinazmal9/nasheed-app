@@ -14,6 +14,11 @@ class Album extends Model
         'status' => 'boolean',
     ];
 
+    public function scopeActive($query): \Illuminate\Database\Eloquent\Builder
+    {
+        return $query->where('status', true);
+    }
+
 
     public function tracks(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {
