@@ -84,10 +84,14 @@ class TrackController extends Controller
         //
     }
 
-    public function getTrackList(Request $request)
+    public function getDataTablesList(Request $request)
     {
-        $tracks = $this->trackService->getTrackList($request);
-
-        return success('Tracks retrieved successfully');
+        $tracks = $this->trackService->getDataTablesList($request);
+        $data = $tracks->getData()->data;
+        if ($tracks->getData()->success) {
+            return success('Tracks retrieved successfully', $data->data);
+        } else {
+            return error($tracks->getData()->message, $data->data);
+        }
     }
 }

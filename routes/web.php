@@ -41,6 +41,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/password-update/{profile}', 'profile_password')->name('password');
     });
 
+    Route::controller(TrackController::class)->name('tracks.')->prefix('tracks')->group(function () {
+        Route::post('/update-status/{track}', 'updateStatus')->name('status.update');
+        Route::get('dataTables/list', 'getDataTablesList')->name('dataTables.list');
+    });
+
     Route::resource('/artists', ArtistController::class);
     Route::resource('/lyricists', LyricistController::class);
     Route::resource('/dedications', DedicationController::class);

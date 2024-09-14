@@ -4,10 +4,12 @@ namespace App\Services;
 
 use App\Models\Track;
 use Illuminate\Support\Str;
+use Illuminate\Http\Request;
 use App\Traits\ImageSaveTrait;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
-use App\Http\Requests\StoreTrackRequest;
 use Illuminate\Support\Facades\File;
+use App\Http\Requests\StoreTrackRequest;
 
 class TrackService
 {
@@ -67,13 +69,13 @@ class TrackService
     }
 
 
-    public function getTrackList(Request $request) {
+    public function getDataTablesList(Request $request): JsonResponse
+    {
         try {
             $columns = [
-                'sl',
                 'title',
                 'description',
-                'artist',
+                // 'artist',
                 'cover_image',
                 'status',
                 'actions'
@@ -125,16 +127,8 @@ class TrackService
             $data = [];
 
             if (! empty($tracks)) {
-                foreach ($tracks as $track) {
-
-                    $editLink = route('tracks.edit', $track->id);
-
-                    $trackStatus = $track->status ? __('app.enabled') : __('app.disabled');
-                    $trackStatusClass = $track->status ? 'success' : 'danger';
-                    $view = 'View';
-                    $edit = 'Edit';
-                    $delete = 'Delete';
-
+                foreach ($tracks as $key => $track) {
+                    $sl = $key + 1;
                     $status = "<div class=\"form-check form-switch\">
                                     <input class=\"form-check-input\" type=\"checkbox\"
                                         " . ($track->status == 1 ? 'checked' : '') . " name=\"status\"
@@ -142,30 +136,30 @@ class TrackService
                                         onchange=\"updateTrackStatus(this)\">
                                 </div>";
 
-                    $editBtn = "<a class="border-0 btn btn-sm" href="{{route('artists.edit', $artist->id)}}"><i
-                                                    class="fa fa-pencil text-secondary fa-xl"></i></a>";
-                    $deleteBtn = "<button type='button' onclick=deleteCategory('{$category->slug}') class='dropdown-item'>{$delete}</button>";
+                    $editBtn = "<a class=\"border-0 btn btn-sm\" href=\"" . route('tracks.edit', $track->id) . "\"><i
+                    class=\"fa fa-pencil text-secondary fa-xl\"></i></a>";
+                    $deleteBtn = "<button class=\"border-0 btn btn-sm\" href=\"#\" onclick=\"deleteTrack(this)\"
+                                data-id=\"{$track->id}\"><i
+                                class=\"far fa-trash-can text-danger fa-xl\"></i></button>";
 
-                    $detailBtn = "<button type='button'  data-bs-toggle='modal' data-bs-target='#detailsModal' class='dropdown-item'
-                    onclick='detailsModal({$category})'>{$view}</button>";
+                    $trackImage = $track->cover_image ? asset($track->cover_image) : asset('images/no-image.png');
+                    $image = "<img class='rounded' src='{$trackImage}' alt='{$track->name}' width='75'>";
 
-                    $categoryImage = asset($category->image);
-                    $image = "<img class='rounded' src='{$categoryImage}' alt='{$category->name}' width='75'>";
-                    $name = "<a class='text-dark' href='".route('admin.category.edit', $category->slug)."'>".$image.'&nbsp;&nbsp;&nbsp;'.$category->name.'</a>';
 
-                    $nestedData['name'] = $name;
+                    $nestedData['DT_RowIndex'] = $sl;
+                    $nestedData['title'] = $track->title ?? '';
+                    $nestedData['description'] = $track->description ?? '';
                     $nestedData['status'] = $status;
-                    $nestedData['created_at'] = $category->created_at?->format('d/m/y');
+                    $nestedData['cover_image'] = $image;
                     $nestedData['actions'] = "<div class='dropdown text-center'>
-                    <button class='dropdown-toggle' onclick='toggleActions(this)' type='button' id='dropdownMenuButton' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>
-                        <i class='fa-solid fa-ellipsis'></i>
-                    </button>
-                    <div class='dropdown-menu' aria-labelledby='dropdownMenuButton'>
-                        {$detailBtn}
-                        {$editBtn}
-                        {$deleteBtn}
-                    </div>
-                  </div>";
+                        <button class='dropdown-toggle' onclick='toggleActions(this)' type='button' id='dropdownMenuButton' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>
+                            <i class='fa-solid fa-ellipsis'></i>
+                        </button>
+                        <div class='dropdown-menu' aria-labelledby='dropdownMenuButton'>
+                            {$editBtn}
+                            {$deleteBtn}
+                        </div>
+                    </div>";
 
                     $data[] = $nestedData;
                 }
@@ -178,31 +172,12 @@ class TrackService
                 'data' => $data,
             ];
 
-            return success(__('app.category_list'), $json_data);
+            return success('All tracks retrieved successfully', $json_data);
         } catch (\Exception $e) {
-            logError('Category List Error ', $e);
-
-            return error(__('app.something_went_wrong'));
+            logger()->error($e->getMessage());
+            return error('Something went wrong');
         }
-
-
-        // $tracks = Track::query()->active();
-        // if ($request->has('q')) {
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     protected function saveAudio($file_destination, $audio_attribute): string
     {

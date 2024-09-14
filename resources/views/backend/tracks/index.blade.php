@@ -38,7 +38,7 @@
                         </div>
                     </div>
                     <div class="block-content block-content-full overflow-x-auto">
-                        <table class="table table-bordered table-striped table-vcenter" id="artistsTable">
+                        <table class="table table-bordered table-striped table-vcenter" id="tracksTable">
                             <thead>
                                 <tr>
                                     <th class="text-center">SL</th>
@@ -50,8 +50,6 @@
                                 </tr>
                             </thead>
                             <tbody>
-
-
                             </tbody>
                         </table>
                     </div>
@@ -63,5 +61,33 @@
 
 
 @push('script')
-    
+<script src="{{ asset('assets') }}/js/plugins/datatables/dataTables.min.js"></script>
+<script src="{{ asset('assets') }}/js/plugins/datatables-bs5/js/dataTables.bootstrap5.min.js"></script>
+<script src="{{ asset('assets') }}/js/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+<script src="{{ asset('assets') }}/js/plugins/datatables-responsive-bs5/js/responsive.bootstrap5.min.js"></script>
+<script src="{{ asset('assets') }}/js/plugins/datatables-buttons/dataTables.buttons.min.js"></script>
+<script src="{{ asset('assets') }}/js/plugins/datatables-buttons-bs5/js/buttons.bootstrap5.min.js"></script>
+<script src="{{ asset('assets') }}/js/plugins/datatables-buttons-jszip/jszip.min.js"></script>
+<script src="{{ asset('assets') }}/js/plugins/datatables-buttons-pdfmake/pdfmake.min.js"></script>
+<script src="{{ asset('assets') }}/js/plugins/datatables-buttons-pdfmake/vfs_fonts.js"></script>
+<script src="{{ asset('assets') }}/js/plugins/datatables-buttons/buttons.print.min.js"></script>
+<script src="{{ asset('assets') }}/js/plugins/datatables-buttons/buttons.html5.min.js"></script>
+<script src="{{ asset('assets') }}/js/pages/be_tables_datatables.min.js"></script>
+
+<script>
+    $('#tracksTable').DataTable({
+        processing: true,
+        serverSide: true,
+        ajax: "{{ route('tracks.dataTables.list') }}",
+        columns: [
+            {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false},
+            {data: 'title', name: 'title'},
+            {data: 'description', name: 'description'},
+            {data: 'cover_image', name: 'cover_image'},
+            {data: 'status', name: 'status'},
+            {data: 'actions', name: 'action', orderable: false, searchable: false},
+        ]
+    });
+
+</script>
 @endpush
