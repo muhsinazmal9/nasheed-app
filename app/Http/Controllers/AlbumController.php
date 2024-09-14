@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Album;
 use Illuminate\Http\Request;
 use App\Traits\ImageSaveTrait;
+use Illuminate\Support\Facades\Log;
 
 class AlbumController extends Controller
 {
@@ -59,7 +60,7 @@ class AlbumController extends Controller
 
         $album->tracks()->attach($tracks);
 
-        return redirect()->route('albums.index')->with('success', 'Album Created Successfully');
+        return redirect()->route('albums.index')->with('success', 'Album Updated Successfully');
     }
 
     /**
@@ -75,7 +76,9 @@ class AlbumController extends Controller
      */
     public function edit(Album $album)
     {
-        //
+
+        $selectedTracks = $album->tracks()->select('id', 'title')->get();
+        return view('backend.albums.edit', compact('album', 'selectedTracks'));
     }
 
     /**
@@ -83,7 +86,48 @@ class AlbumController extends Controller
      */
     public function update(Request $request, Album $album)
     {
-        //
+        $request->validate([
+            'title' => 'required',
+            'cover_image' => 'image|mimes:jpg,jpeg,png',
+            'release_date'=> 'date',
+        ]);
+
+        if($request->status == null){
+            $status = 0;
+        }
+        else{
+            $status = 1;
+        }
+
+        if ($request->hasFile('cover_image')) {
+            if (!empty($album->cover_image)) {
+                $this->deleteImage(public_path($album->cover_image));
+            }
+            $image_name = $this->saveImage('albums/cover_images', $request->file('cover_image'), 400, 400);
+
+            $tracks = $request['tracks_id'];
+            $album->update([
+                'title' => $request->title,
+                'description' => $request->description,
+                'cover_image' => $image_name,
+                'released_at' => $request->release_date,
+                'status' => $status,
+            ]);
+            $album->tracks()->sync($tracks);
+        }
+        else{
+
+            $tracks = $request['tracks_id'];
+            $album->update([
+                'title' => $request->title,
+                'description' => $request->description,
+                'released_at' => $request->release_date,
+                'status' => $status,
+            ]);
+            $album->tracks()->sync($tracks);
+        }
+
+        return redirect()->route('albums.index')->with('success', 'Album Created Successfully');
     }
 
     /**
@@ -91,6 +135,32 @@ class AlbumController extends Controller
      */
     public function destroy(Album $album)
     {
-        //
+        if (!empty($album->cover_image)) {
+            $this->deleteImage(public_path($album->cover_image));
+        }
+        try {
+            $album->delete();
+        } catch (\Exception $e) {
+            Log::error($e);
+            return error($e->getMessage());
+        }
+
+        return success('Album Deleted Successfully');
+    }
+
+    public function updateStatus(Album $album)
+    {
+
+
+        try {
+            $album->update([
+                'status' => $album->status == 0 ? 1 : 0,
+            ]);
+        } catch (\Exception $e) {
+            Log::error($e);
+            return error($e->getMessage());
+        }
+
+        return success('Album Status Updated Successfully');
     }
 }

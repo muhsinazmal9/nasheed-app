@@ -38,7 +38,7 @@
                         </div>
                     </div>
                     <div class="block-content block-content-full overflow-x-auto">
-                        <table class="table table-bordered table-striped table-vcenter" id="artistsTable">
+                        <table class="table table-bordered table-striped table-vcenter" id="albumsTable">
                             <thead>
                                 <tr>
                                     <th class="text-center">SL</th>
@@ -62,15 +62,19 @@
                                             @endif
                                         </td>
                                         <td>
-                                            @if ($album->status == 1)
-                                                <span class="badge bg-success">Active</span>
-                                            @else
-                                                <span class="badge bg-danger">Inactive</span>
-                                            @endif
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox"
+                                                    {{ $album->status == 1 ? 'checked' : '' }} name="status"
+                                                    data-id="{{ $album->id }}" data-status="{{ $album->status }}"
+                                                    onchange="updateAlbumStatus(this)">
+                                            </div>
                                         </td>
-                                        <td>
-                                            <a href="{{ route('albums.edit', $album->id) }}" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i></a>
-                                            <a href="{{ route('albums.destroy', $album->id) }}" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></a>
+                                        <td class="text-center">
+                                            <a class="border-0 btn btn-sm" href="{{route('albums.edit', $album->id)}}"><i
+                                                class="fa fa-pencil text-secondary fa-xl"></i></a>
+                                            <button class="border-0 btn btn-sm" href="#" onclick="deleteAlbum(this)"
+                                                data-id="{{ $album->id }}"><i
+                                                class="far fa-trash-can text-danger fa-xl"></i></button>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -83,3 +87,102 @@
         </div>
     </div>
 @endsection
+
+@push('script')
+    <script src="{{ asset('assets') }}/js/plugins/datatables/dataTables.min.js"></script>
+    <script src="{{ asset('assets') }}/js/plugins/datatables-bs5/js/dataTables.bootstrap5.min.js"></script>
+    <script src="{{ asset('assets') }}/js/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="{{ asset('assets') }}/js/plugins/datatables-responsive-bs5/js/responsive.bootstrap5.min.js"></script>
+    <script src="{{ asset('assets') }}/js/plugins/datatables-buttons/dataTables.buttons.min.js"></script>
+    <script src="{{ asset('assets') }}/js/plugins/datatables-buttons-bs5/js/buttons.bootstrap5.min.js"></script>
+    <script src="{{ asset('assets') }}/js/plugins/datatables-buttons-jszip/jszip.min.js"></script>
+    <script src="{{ asset('assets') }}/js/plugins/datatables-buttons-pdfmake/pdfmake.min.js"></script>
+    <script src="{{ asset('assets') }}/js/plugins/datatables-buttons-pdfmake/vfs_fonts.js"></script>
+    <script src="{{ asset('assets') }}/js/plugins/datatables-buttons/buttons.print.min.js"></script>
+    <script src="{{ asset('assets') }}/js/plugins/datatables-buttons/buttons.html5.min.js"></script>
+    <script src="{{ asset('assets') }}/js/pages/be_tables_datatables.min.js"></script>
+
+    <script>
+        $('#albumsTable').DataTable();
+        function deleteAlbum(button) {
+            const id = $(button).data('id');
+            Swal.fire({
+                title: "Are you sure?",
+                text: "You won't be able to revert this!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes, delete it!"
+            }).then((result) => {
+                if (result.isConfirmed) {
+
+                    let url = "{{ route('albums.destroy', ':id') }}";
+                    url = url.replace(':id', id);
+                    let method = "DELETE";
+                    let token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+                    $.ajax({
+                        url: url,
+                        type: 'DELETE',
+                        dataType: 'json',
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        success: function(data) {
+                            if (data.success) {
+                                showToast(data.message, "success");
+                                $(button).closest('tr')[0].remove()
+                            }
+                        }
+                    });
+
+                }
+            });
+        }
+
+        function updateAlbumStatus(element) {
+            Swal.fire({
+                title: "Are you sure?",
+                text: "You won't be able to revert this!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes, update it!"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    updateAlbumStatusAjax(element);
+                } else {
+                    element.checked = !element.checked;
+                }
+            })
+        }
+
+        function updateAlbumStatusAjax(element) {
+            const id = $(element).data('id');
+            let url = "{{ route('albums.status.update', ':id') }}";
+            url = url.replace(':id', id);
+
+            $.ajax({
+                url: url,
+                type: 'POST',
+                dataType: 'json',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function(data) {
+                    if (data.success) {
+                        showToast(data.message, "success");
+                    } else {
+                        showToast(data.message, "error");
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.log('xhr.responseText, status, error', xhr.responseText, status, error);
+                    showToast('Something went wrong', "error");
+                }
+            });
+        }
+    </script>
+@endpush

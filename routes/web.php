@@ -45,6 +45,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/search', 'search')->name('search');
     });
 
+    Route::controller(AlbumController::class)->name('albums.')->prefix('albums')->group(function () {
+        Route::post('/update-status/{album}', 'updateStatus')->name('status.update');
+    });
+
     Route::resource('/artists', ArtistController::class);
     Route::resource('/lyricists', LyricistController::class);
     Route::resource('/dedications', DedicationController::class);

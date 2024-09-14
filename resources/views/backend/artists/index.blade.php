@@ -5,6 +5,7 @@
     <link rel="stylesheet"
         href="{{ asset('assets') }}/js/plugins/datatables-responsive-bs5/css/responsive.bootstrap5.min.css">
 @endpush
+
 @section('content')
     <div class="bg-body-light">
         <div class="content content-full">

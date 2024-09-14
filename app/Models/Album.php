@@ -8,7 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class Album extends Model
 {
     use HasFactory;
-    protected $guarded = [];
+    protected $guarded = ['id'];
+
+    protected $casts = [
+        'status' => 'boolean',
+    ];
+
 
     public function tracks(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {
