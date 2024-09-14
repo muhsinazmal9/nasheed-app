@@ -6,9 +6,12 @@ use App\Models\Artist;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use App\Traits\ImageSaveTrait;
 
 class ArtistController extends Controller
 {
+
+    use ImageSaveTrait;
     /**
      * Display a listing of the resource.
      */
@@ -38,7 +41,7 @@ class ArtistController extends Controller
         $request->validate([
             'name' => 'required',
             'description' => 'required',
-            // 'image'=>'required|image',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
         $request['slug'] = Str::slug($request->name);
@@ -54,12 +57,16 @@ class ArtistController extends Controller
         } else {
             $status =  0;
         }
+        if($request->hasFile('image')) {
+            $image_name = $this->saveImage('artist', $request->file('image'), 400, 400);
+        }
 
         Artist::create([
             'name' => $request->name,
             'description' => $request->description,
             'slug' => $request->slug,
             'status' => $status,
+            'image' =>$image_name,
         ]);
 
         return back()->with('success', 'Artist Created Successfully');
@@ -77,17 +84,44 @@ class ArtistController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Artist $artist)
     {
-        //
+        return view('backend.artists.edit', [
+            'artist' => $artist,
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Artist $artist)
     {
-        //
+        $request->validate([
+            'name' => 'required',
+            'description' => 'required',
+        ]);
+
+        if ($request->hasFile('image')) {
+            if (!empty($artist->image)) {
+                $this->deleteImage(public_path('uploads/artist/' . $artist->image));
+            }
+
+            $image_name = $this->saveImage('artist', $request->file('image'), 400, 400);
+            $artist->update([
+                'name' => $request->name,
+                'description' => $request->description,
+                'image' => $image_name,
+            ]);
+        }
+        else {
+            $artist->update([
+                'name' => $request->name,
+                'description' => $request->description,
+            ]);
+        }
+
+        return redirect()->route('artists.index')->with('success', 'Artist Updated Successfully');
+
     }
 
     /**

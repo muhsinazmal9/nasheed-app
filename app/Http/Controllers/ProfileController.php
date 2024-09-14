@@ -10,9 +10,11 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
+use App\Traits\ImageSaveTrait;
 
 class ProfileController extends Controller
 {
+    use ImageSaveTrait;
     /**
      * Display a listing of the resource.
      */
@@ -79,29 +81,32 @@ class ProfileController extends Controller
     public function update(Request $request, User $profile)
     {
         $user = $profile;
+
+        // Validate the request
         $request->validate([
             'name' => 'required',
             'email' => 'required|email|unique:users,email,' . $user->id,
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
-        $user->name = $request->name;
-        $user->email = $request->email;
+        if ($request->hasFile('image')) {
+            if (!empty($user->image)) {
+                $this->deleteImage(public_path('uploads/profile/' . $user->image));
+            }
 
-        if ($request->hasFile('image') ){
-
-            $image = $request->file('image');
-            $image_name = time() . '.' . $image->getClientOriginalExtension();
-            $image->move(public_path('uploads/profile/'), $image_name);
-            $user->image = $image_name;
-
+            $image_name = $this->saveImage('profile', $request->file('image'), 400, 400);
         }
 
-        $user->save();
-
+        // Update user details
+        User::where('id', $user->id)->update([
+            'name' => $request->name,
+            'email' => $request->email,
+            'image' => $image_name,
+        ]);
 
         return redirect()->route('profile.index')->with('success', 'Profile Updated Successfully');
     }
+
 
     public function profile_password(Request $request, User $profile)
     {
