@@ -2,14 +2,23 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreTrackRequest;
 use App\Models\Track;
 use App\Models\Artist;
 use App\Models\Lyricist;
+use App\Services\TrackService;
 use Illuminate\Http\Request;
 use Illuminate\Contracts\View\View;
 
+
 class TrackController extends Controller
 {
+
+    public function __construct(private TrackService $trackService)
+    {
+        //
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -31,9 +40,16 @@ class TrackController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreTrackRequest $request)
     {
-        //
+        $createdTrack = $this->trackService->createTrack($request);
+
+        if ($createdTrack) {
+            return redirect()->route('tracks.index');
+        } else {
+            return redirect()->back()->with('error', 'Track Creation Failed');
+        }
+
     }
 
     /**

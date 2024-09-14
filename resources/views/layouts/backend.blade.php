@@ -36,10 +36,10 @@
     <!-- Extra CSS Libraries -->
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
 
+    @stack('style')
+
     <!-- Main CSS -->
     <link rel="stylesheet" id="css-main" href="{{ asset('assets') }}/css/oneui.min-5.9.css">
-
-    @stack('style')
 </head>
 
 <body>
@@ -62,7 +62,7 @@
                 <div class="row fs-sm">
                     <div class="col-sm-6 order-sm-2 py-1 text-center text-sm-end">
                         Crafted with <i class="fa fa-heart text-danger"></i> by <a class="fw-semibold"
-                            href="https://qaseedah9.com" target="_blank">Qaseedah Shareef</a>
+                            href="https://qaseedah9.com" target="_blank">QS - Dev Team</a>
                     </div>
                     <div class="col-sm-6 order-sm-1 py-1 text-center text-sm-start">
                         <a class="fw-semibold" href="https://qaseedah9.com" target="_blank"> Qaseedah Shareef</a> &copy; <span data-toggle="year-copy"></span>
@@ -72,8 +72,7 @@
         </footer>
     </div>
 
-    <!-- jQuery JS -->
-    <script src="{{ asset('assets') }}/js/lib/jquery.min.js"></script>
+
 
     <!-- Extra JS -->
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
@@ -81,6 +80,8 @@
 
     <!-- Main JS -->
     <script src="{{ asset('assets') }}/js/oneui.app.min-5.9.js"></script>
+    <!-- jQuery JS -->
+    <script src="{{ asset('assets') }}/js/lib/jquery.min.js"></script>
 
 
     <script>
