@@ -99,4 +99,10 @@ class TrackController extends Controller
 
         return success(data: $tracks);
     }
+    public function getTrackList(Request $request)
+    {
+        $tracks = $this->trackService->getTrackList($request);
+
+        return success('Tracks retrieved successfully');
+    }
 }
