@@ -83,4 +83,11 @@ class TrackController extends Controller
     {
         //
     }
+
+    public function getTrackList(Request $request)
+    {
+        $tracks = $this->trackService->getTrackList($request);
+
+        return success('Tracks retrieved successfully');
+    }
 }

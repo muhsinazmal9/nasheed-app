@@ -65,6 +65,16 @@
                             </div>
 
                             <div class="mb-4">
+                                <label for="dedication_id" class="form-label">Shan Mubarak <span class="text-danger">*</span></label>
+                                <select name="dedication_id" id="dedication_id" class="form-select">
+                                    <option value="">Select Dedication</option>
+                                </select>
+                                @error('dedication_id')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
+
+                            <div class="mb-4">
                                 <label for="album_id" class="form-label">Album</label>
                                 <select name="album_id" id="album_id" class="form-select">
                                     <option value="">Select Album</option>
@@ -154,7 +164,7 @@
                         })
                     };
                 },
-                // cache: true
+                cache: true
             }
         });
 
@@ -183,7 +193,36 @@
                         })
                     };
                 },
-                // cache: true
+                cache: true
+            }
+        });
+
+        $('#dedication_id').select2({
+            placeholder: 'Select Dedication',
+            allowClear: true,
+            minimumInputLength: 1,
+            ajax: {
+                url: "{{ route('dedications.search') }}",
+                dataType: 'json',
+                type: 'GET',
+                delay: 250,
+                data: function(params) {
+                    return {
+                        q: params.term
+                    };
+                },
+                processResults: function(response) {
+                    return {
+                        results: $.map(response.data, function(item) {
+                            console.log(item);
+                            return {
+                                text: item.name,
+                                id: item.id
+                            }
+                        })
+                    };
+                },
+                cache: true
             }
         });
     </script>

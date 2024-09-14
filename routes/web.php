@@ -31,6 +31,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::controller(DedicationController::class)->name('dedications.')->prefix('dedications')->group(function () {
         Route::post('/update-status/{dedication}', 'updateStatus')->name('status.update');
+        Route::get('/search', 'search')->name('search');
     });
     Route::controller(UserController::class)->name('users.')->prefix('users')->group(function () {
         Route::post('/update-status/{user}', 'updateStatus')->name('status.update');
