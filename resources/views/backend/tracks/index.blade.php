@@ -75,10 +75,22 @@
 <script src="{{ asset('assets') }}/js/pages/be_tables_datatables.min.js"></script>
 
 <script>
+    const url = "{{ route('tracks.dataTables.list') }}";
     $('#tracksTable').DataTable({
         processing: true,
         serverSide: true,
-        ajax: "{{ route('tracks.dataTables.list') }}",
+        ajax: {
+            url: url,
+            type: 'GET',
+            data: function (d) {
+                console.log('data', d);
+            },
+            error: function (xhr, error, thrown) {
+                console.log(xhr);
+                console.log(error);
+                console.log(thrown);
+            }
+        },
         columns: [
             {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false},
             {data: 'title', name: 'title'},
