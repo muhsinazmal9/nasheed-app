@@ -46,7 +46,7 @@
                                     @enderror
                             </div>
                             <div class="mb-4">
-                                <label for="artist_id" class="form-label">Tracks <span class="text-danger">*</span></label>
+                                <label for="tracks_id" class="form-label">Tracks <span class="text-danger">*</span></label>
                                 <select name="tracks_id[]" id="tracks_id" class="form-select" multiple required>
                                 </select>
                                 @error('tracks_id')
@@ -109,7 +109,7 @@
             minimumInputLength: 1,
             multiple: true,
             ajax: {
-                url: "{{ route('artists.search') }}",
+                url: "{{ route('tracks.search') }}",
                 dataType: 'json',
                 type: 'GET',
                 delay: 250,
@@ -124,35 +124,6 @@
                             console.log(item);
                             return {
                                 text: item.title,
-                                id: item.id
-                            }
-                        })
-                    };
-                },
-                // cache: true
-            }
-        });
-
-        $('#lyricist_id').select2({
-            placeholder: 'Select Lyricist',
-            allowClear: true,
-            minimumInputLength: 1,
-            ajax: {
-                url: "{{ route('lyricists.search') }}",
-                dataType: 'json',
-                type: 'GET',
-                delay: 250,
-                data: function(params) {
-                    return {
-                        q: params.term
-                    };
-                },
-                processResults: function(response) {
-                    return {
-                        results: $.map(response.data, function(item) {
-                            console.log(item);
-                            return {
-                                text: item.name,
                                 id: item.id
                             }
                         })

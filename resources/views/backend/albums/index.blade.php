@@ -51,6 +51,29 @@
                             </thead>
                             <tbody>
 
+                                @foreach ($albums as $key => $album)
+                                    <tr>
+                                        <td>{{ $key + 1 }}</td>
+                                        <td>{{ $album->title }}</td>
+                                        <td>{{ $album->description }}</td>
+                                        <td>
+                                            @if ($album->cover_image)
+                                                <img src="{{ asset($album->cover_image) }}" alt="image" width="50">
+                                            @endif
+                                        </td>
+                                        <td>
+                                            @if ($album->status == 1)
+                                                <span class="badge bg-success">Active</span>
+                                            @else
+                                                <span class="badge bg-danger">Inactive</span>
+                                            @endif
+                                        </td>
+                                        <td>
+                                            <a href="{{ route('albums.edit', $album->id) }}" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i></a>
+                                            <a href="{{ route('albums.destroy', $album->id) }}" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></a>
+                                        </td>
+                                    </tr>
+                                @endforeach
 
                             </tbody>
                         </table>

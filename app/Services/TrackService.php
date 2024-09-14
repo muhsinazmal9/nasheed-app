@@ -142,8 +142,8 @@ class TrackService
                                         onchange=\"updateTrackStatus(this)\">
                                 </div>";
 
-                    $editBtn = "<a class="border-0 btn btn-sm" href="{{route('artists.edit', $artist->id)}}"><i
-                                                    class="fa fa-pencil text-secondary fa-xl"></i></a>";
+                    $editBtn = "<a class=\"border-0 btn btn-sm\" href=\"" . route('tracks.edit', $track->id) . "\"><i
+                                class=\"fa fa-pencil text-secondary fa-xl\"></i></a>";
                     $deleteBtn = "<button type='button' onclick=deleteCategory('{$category->slug}') class='dropdown-item'>{$delete}</button>";
 
                     $detailBtn = "<button type='button'  data-bs-toggle='modal' data-bs-target='#detailsModal' class='dropdown-item'
