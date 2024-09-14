@@ -5,9 +5,9 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Category>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Lyricist>
  */
-class DedicationFactory extends Factory
+class LyricistFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -17,11 +17,11 @@ class DedicationFactory extends Factory
     public function definition(): array
     {
         return [
-            'slug' => fake()->slug(),
             'name' => fake()->name(),
+            'slug' => fake()->slug(),
             'description' => fake()->text(),
             'image' => fake()->imageUrl(240, 240),
-            'status' => true,
+             'status' => true,
         ];
     }
 }

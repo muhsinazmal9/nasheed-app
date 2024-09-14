@@ -15,4 +15,9 @@ class Lyricist extends Model
     protected $casts = [
         'status' => 'boolean'
     ];
+
+    public function scopeActive($query)
+    {
+        return $query->where('status', true);
+    }
 }

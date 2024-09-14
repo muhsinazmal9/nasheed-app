@@ -15,4 +15,14 @@ class Artist extends Model
     protected $casts = [
         'status' => 'boolean'
     ];
+
+    public function tracks(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Track::class);
+    }
+
+    public function scopeActive($query)
+    {
+        return $query->where('status', true);
+    }
 }
