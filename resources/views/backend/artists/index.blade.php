@@ -29,6 +29,48 @@
     </div>
     <div class="content">
         <div class="row">
+            <div class="col-lg-4">
+                <div class="block block-rounded">
+                    <div class="block-header block-header-default">
+                        <h3 class="block-title">Add Artist</h3>
+                    </div>
+                    <div class="block-content block-content-full overflow-x-auto">
+                        <form action="{{ route('artists.store') }}" method="POST" enctype="multipart/form-data">
+                            @csrf
+                            <div class="mb-3">
+                                <label for="name" class="form-label">Name <span class="text-danger">*</span> </label>
+                                <input type="text" name="name" id="name" class="form-control" placeholder="Enter name">
+                                @error('name')
+                                    <span class="text-danger">{{$message}}</small>
+                                @enderror
+                            </div>
+                            <div class="mb-3">
+                                <label for="description" class="form-label">Description <span class="text-danger">*</span></label>
+                                <textarea name="description" id="description" cols="30" rows="3" class="form-control" placeholder="Enter description"></textarea>
+                                @error('name')
+                                    <span class="text-danger">{{$message}}</small>
+                                @enderror
+                            </div>
+                            <div class="mb-3">
+                                <label for="image" class="form-label">Image</label>
+                                <input type="file" class="form-control" name="image" id="image"
+                                    onchange="document.getElementById('image_preview').src = window.URL.createObjectURL(this.files[0])">
+                            </div>
+
+                            <div class="mb-3">
+                                <img src="https://placehold.co/100" id="image_preview" alt="" width="100">
+                            </div>
+                            <div class="mb-3 form-check form-switch">
+                                <label for="status" class="form-label">Active</label>
+                                <input type="checkbox" name="status" id="status" class="form-check-input">
+                            </div>
+                            <div>
+                                <button class="btn btn-primary" type="submit">Submit</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
             <div class="col-lg-8">
                 <div class="block block-rounded">
                     <div class="block-header block-header-default">
@@ -55,7 +97,7 @@
                                         <td class="fw-semibold fs-sm">{{ $artist->name }}</td>
                                         <td class="fw-semibold fs-sm">{{ $artist->description }}</td>
                                         <td class="fs-sm">
-                                            <img src="" alt="">
+                                            <img src="{{asset($artist->image)}}" width="50px" alt="">
                                         </td>
                                         <td>
                                             <div class="form-check form-switch">
@@ -66,8 +108,8 @@
                                             </div>
                                         </td>
                                         <td class="text-center">
-                                            <button class="border-0 btn btn-sm" href="#" data-id="{{ $artist->id }}"><i
-                                                    class="fa fa-pencil text-secondary fa-xl"></i></button>
+                                            <a class="border-0 btn btn-sm" href="{{route('artists.edit', $artist->id)}}"><i
+                                                    class="fa fa-pencil text-secondary fa-xl"></i></a>
                                             <button class="border-0 btn btn-sm " href="#" onclick="deleteArtist(this)"
                                                 data-id="{{ $artist->id }}"><i
                                                     class="far fa-trash-can text-danger fa-xl"></i></button>
@@ -77,42 +119,6 @@
 
                             </tbody>
                         </table>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4">
-                <div class="block block-rounded">
-                    <div class="block-header block-header-default">
-                        <h3 class="block-title">Add Artist</h3>
-                    </div>
-                    <div class="block-content block-content-full overflow-x-auto">
-                        <form action="{{ route('artists.store') }}" method="POST" enctype="multipart/form-data">
-                            @csrf
-                            <div class="mb-3">
-                                <label for="name" class="form-label">Name</label>
-                                <input type="text" name="name" id="name" class="form-control" placeholder="Enter name">
-                            </div>
-                            <div class="mb-3">
-                                <label for="description" class="form-label">Description</label>
-                                <textarea name="description" id="description" cols="30" rows="3" class="form-control" placeholder="Enter description"></textarea>
-                            </div>
-                            <div class="mb-3">
-                                <label for="image" class="form-label">Image</label>
-                                <input type="file" class="form-control" name="image" id="image"
-                                    onchange="document.getElementById('image_preview').src = window.URL.createObjectURL(this.files[0])">
-                            </div>
-
-                            <div class="mb-3">
-                                <img src="https://placehold.co/100" id="image_preview" alt="" width="100">
-                            </div>
-                            <div class="mb-3 form-check form-switch">
-                                <label for="status" class="form-label">Active</label>
-                                <input type="checkbox" name="status" id="status" class="form-check-input">
-                            </div>
-                            <div>
-                                <button class="btn btn-primary" type="submit">Submit</button>
-                            </div>
-                        </form>
                     </div>
                 </div>
             </div>

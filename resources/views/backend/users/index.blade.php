@@ -29,12 +29,15 @@
     </div>
     <div class="content">
         <div class="row">
-            <div class="col-lg-8">
+            <div class="col-lg-12">
                 <div class="block block-rounded">
-                    <div class="block-header block-header-default">
+                    <div class="block-header block-header-default d-flex justify-content-between">
                         <h3 class="block-title">
                             Users List
                         </h3>
+                        <div class="">
+                            <a href="{{ route('users.create') }}" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i> Add User</a>
+                        </div>
                     </div>
                     <div class="block-content block-content-full overflow-x-auto">
                         <table class="table table-bordered table-striped table-vcenter" id="usersTable">
@@ -43,6 +46,7 @@
                                     <th class="text-center">SL</th>
                                     <th>Name</th>
                                     <th>Email</th>
+                                    <th>Image</th>
                                     <th>Status</th>
                                     <th>Action</th>
                                 </tr>
@@ -53,6 +57,9 @@
                                         <td class="text-center fs-sm">{{ $key + 1 }}</td>
                                         <td class="fw-semibold fs-sm">{{ $user->name }}</td>
                                         <td class="fw-semibold fs-sm">{{ $user->email }}</td>
+                                        <td class="fs-sm">
+                                            <img src="{{asset($user->image)}}" width="50px" alt="">
+                                        </td>
 
                                         <td>
                                             <div class="form-check form-switch">
@@ -74,48 +81,6 @@
 
                             </tbody>
                         </table>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4">
-                <div class="block block-rounded">
-                    <div class="block-header block-header-default">
-                        <h3 class="block-title">Add User</h3>
-                    </div>
-                    <div class="block-content block-content-full overflow-x-auto">
-                        <form action="{{ route('users.store') }}" method="POST" enctype="multipart/form-data">
-                            @csrf
-                            <div class="mb-3">
-                                <label for="name" class="form-label">Name</label>
-                                <input type="text" name="name" id="name" class="form-control" placeholder="Enter name">
-                                @error('name')
-                                    <small class="text-danger">{{ $message }}</small>
-                                @enderror
-                            </div>
-
-                            <div class="mb-3">
-                                <label for="email" class="form-label">Email</label>
-                                <input type="email" name="email" id="email" class="form-control" placeholder="Enter email">
-                                @error('email')
-                                    <small class="text-danger">{{ $message }}</small>
-                                @enderror
-                            </div>
-                            <div class="mb-3">
-                                <label for="password" class="form-label">Password</label>
-                                <input type="password" name="password" id="password" class="form-control" placeholder="Enter password">
-                                @error('password')
-                                    <small class="text-danger">{{ $message }}</small>
-                                @enderror
-                            </div>
-
-                            <div class="mb-3 form-check form-switch">
-                                <label for="status" class="form-label">Active</label>
-                                <input type="checkbox" name="status" id="status" class="form-check-input">
-                            </div>
-                            <div>
-                                <button class="btn btn-primary" type="submit">Submit</button>
-                            </div>
-                        </form>
                     </div>
                 </div>
             </div>

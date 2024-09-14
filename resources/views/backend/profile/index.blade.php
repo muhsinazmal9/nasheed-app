@@ -8,7 +8,7 @@
             @if (auth()->user()->image == null)
                 <img class="img-avatar img-avatar-thumb" src="https://placehold.co/50" alt="">
             @else
-                <img class="img-avatar img-avatar-thumb" src="{{asset('uploads')}}/profile/{{auth()->user()->image}}" alt="">
+                <img class="img-avatar img-avatar-thumb" src="{{asset(auth()->user()->image)}}" alt="">
             @endif
           </div>
           <h1 class="h2 text-white mb-0">Edit Account</h1>
@@ -27,7 +27,7 @@
           <h3 class="block-title">Profile</h3>
         </div>
         <div class="block-content">
-          <form action="{{route('profile.update' , auth()->user())}}" method="POST" enctype="multipart/form-data">
+          <form action="{{route('profile.update' , auth()->user()->id)}}" method="POST" enctype="multipart/form-data">
             @csrf
             @method('PUT')
             <div class="row push">
@@ -49,11 +49,11 @@
                 <div class="mb-4">
                   <label class="form-label">Your Avatar</label>
                   <div class="mb-4">
-                    <img class="img-avatar" src="https://placehold.co/100" alt="">
+                    <img class="img-avatar" id="image" src="{{asset(auth()->user()->image)}}" alt="">
                   </div>
                   <div class="mb-4">
-                    <label for="one-profile-edit-avatar" class="form-label">Choose a new avatar</label>
-                    <input class="form-control" name="image" type="file" id="one-profile-edit-avatar">
+                    <label for="image" class="form-label">Choose a new avatar</label>
+                    <input class="form-control" id="image" type="file" name="image" onchange="document.getElementById('image').src = window.URL.createObjectURL(this.files[0])">
                   </div>
                 </div>
                 <div class="mb-4">
