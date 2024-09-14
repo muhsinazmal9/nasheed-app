@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AlbumController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ArtistController;
@@ -39,6 +40,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::controller(ProfileController::class)->name('profile.')->prefix('profile')->group(function () {
         Route::post('/password-update/{profile}', 'profile_password')->name('password');
     });
+    Route::controller(TrackController::class)->name('tracks.')->prefix('tracks')->group(function () {
+        Route::get('/search', 'search')->name('search');
+    });
 
     Route::resource('/artists', ArtistController::class);
     Route::resource('/lyricists', LyricistController::class);
@@ -46,6 +50,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('/tracks', TrackController::class);
     Route::resource('/users', UserController::class);
     Route::resource('/profile', ProfileController::class);
+    Route::resource('/albums', AlbumController::class);
 
 });
 

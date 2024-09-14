@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreTrackRequest;
 use App\Models\Track;
+use Illuminate\Http\JsonResponse;
 use App\Models\Artist;
 use App\Models\Lyricist;
 use App\Services\TrackService;
@@ -82,5 +83,20 @@ class TrackController extends Controller
     public function destroy(Track $track)
     {
         //
+    }
+
+    public function search(Request $request): JsonResponse
+    {
+        $search = $request->q;
+
+        if ($search == '') {
+            return success(data: []);
+        }
+
+        $tracks = Track::where(function ($query) use ($search) {
+            $query->where('title', 'like', "%$search%");
+        })->get();
+
+        return success(data: $tracks);
     }
 }
