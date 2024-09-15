@@ -21,7 +21,7 @@ return new class extends Migration {
     public function down(): void
     {
         Schema::table('tracks', function (Blueprint $table) {
-            $table->string('description')->nullable(false)->change();
+            $table->text('description')->nullable(true)->change();
         });
     }
 };
