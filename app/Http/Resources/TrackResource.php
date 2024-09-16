@@ -24,6 +24,7 @@ class TrackResource extends JsonResource
             'audio_file' => $this->audio_base_name ? route('api.tracks.audio-files.stream', ['audio_base_name' => $this->audio_base_name, 'track_id' => $this->id]) : null,
             'cover_image' => $this->cover_image ? asset($this->cover_image) : null,
             'description' => $this->description,
+            'album' => new AlbumResource($this->album),
         ];
     }
 }

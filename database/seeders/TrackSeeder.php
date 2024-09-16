@@ -46,6 +46,7 @@ class TrackSeeder extends Seeder
                     'dedication_id' => rand(1, 10),
                     'audio_file' => 'uploads/tracks/audio_files/1.mp3',
                     'audio_base_name' => '1.mp3',
+                    'album_id' => 1
                 ],
                 'artists' => [10],
             ],
@@ -57,6 +58,7 @@ class TrackSeeder extends Seeder
                     'dedication_id' => rand(1, 10),
                     'audio_file' => 'uploads/tracks/audio_files/2.mp3',
                     'audio_base_name' => '2.mp3',
+                    'album_id'=> 1
                 ],
                 'artists' => [4],
             ],

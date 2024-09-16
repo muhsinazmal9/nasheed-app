@@ -20,7 +20,7 @@ class AlbumResource extends JsonResource
             'description' => $this->description,
             'cover_image' => $this->cover_image ? asset($this->cover_image) : null,
             'released_at' => $this->released_at,
-            'tracks' => TrackResource::collection($this->tracks)
+            // 'tracks' => TrackResource::collection($this->tracks)
         ];
     }
 }

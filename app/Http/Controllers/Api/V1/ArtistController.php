@@ -39,8 +39,7 @@ class ArtistController extends Controller
      */
     public function albums(Artist $artist): JsonResponse
     {
-        $tracks = $artist->tracks()->get();
-        $albums = $tracks->pluck('albums')->flatten()->unique('id')->values();
+        $albums = $artist->tracks()->distinct('album_id')->get();
 
         if (count($albums) > 0) {
             return success('Albums of artist retrieved successfully', AlbumResource::collection($albums));

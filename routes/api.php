@@ -21,7 +21,7 @@ Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanc
  */
 Route::apiResource('dedications', DedicationController::class)->only(['index', 'show']);
 
-Route::get('artist/{artist}/albums', [ArtistController::class, 'albums']);
+Route::get('artists/{artist}/albums', [ArtistController::class, 'albums']);
 Route::apiResource('artists', ArtistController::class)->only(['index', 'show']);
 Route::apiResource('lyricists', LyricistController::class)->only(['index', 'show']);
 

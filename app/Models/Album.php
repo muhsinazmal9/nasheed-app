@@ -20,8 +20,8 @@ class Album extends Model
     }
 
 
-    public function tracks(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    public function tracks(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
-        return $this->belongsToMany(Track::class);
+        return $this->hasMany(Track::class);
     }
 }
