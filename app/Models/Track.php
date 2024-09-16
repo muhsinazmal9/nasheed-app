@@ -32,6 +32,11 @@ class Track extends Model
         return $this->belongsToMany(Artist::class);
     }
 
+    public function albums(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    {
+        return $this->belongsToMany(Album::class);
+    }
+
     public function scopeActive($query)
     {
         return $query->where('status', true);

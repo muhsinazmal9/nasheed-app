@@ -19,11 +19,15 @@ Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanc
 /**
  * Public APIs
  */
-Route::get('/tracks/audio-files/stream/{track_id}/{audio_base_name}', [TrackController::class, 'audioStream'])->name('api.tracks.audio-files.stream');
 Route::apiResource('dedications', DedicationController::class)->only(['index', 'show']);
+
+Route::get('artist/{artist}/albums', [ArtistController::class, 'albums']);
 Route::apiResource('artists', ArtistController::class)->only(['index', 'show']);
 Route::apiResource('lyricists', LyricistController::class)->only(['index', 'show']);
+
+Route::get('/tracks/audio-files/stream/{track_id}/{audio_base_name}', [TrackController::class, 'audioStream'])->name('api.tracks.audio-files.stream');
 Route::apiResource('tracks', TrackController::class)->only(['index', 'show']);
+
 Route::apiResource('albums', AlbumController::class)->only(['index', 'show']);
 
 /**
