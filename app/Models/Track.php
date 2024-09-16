@@ -9,6 +9,14 @@ class Track extends Model
 {
     use HasFactory;
 
+
+
+    protected $guarded = ['id'];
+
+    protected $casts = [
+        'status' => 'boolean'
+    ];
+
     public function lyricist(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(Lyricist::class);

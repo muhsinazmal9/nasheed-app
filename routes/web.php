@@ -21,14 +21,17 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::controller(ArtistController::class)->name('artists.')->prefix('artists')->group(function () {
         Route::post('/update-status/{artist}', 'updateStatus')->name('status.update');
+        Route::get('/search', 'search')->name('search');
     });
 
     Route::controller(LyricistController::class)->name('lyricists.')->prefix('lyricists')->group(function () {
         Route::post('/update-status/{lyricist}', 'updateStatus')->name('status.update');
+        Route::get('/search', 'search')->name('search');
     });
 
     Route::controller(DedicationController::class)->name('dedications.')->prefix('dedications')->group(function () {
         Route::post('/update-status/{dedication}', 'updateStatus')->name('status.update');
+        Route::get('/search', 'search')->name('search');
     });
     Route::controller(UserController::class)->name('users.')->prefix('users')->group(function () {
         Route::post('/update-status/{user}', 'updateStatus')->name('status.update');
@@ -36,6 +39,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::controller(ProfileController::class)->name('profile.')->prefix('profile')->group(function () {
         Route::post('/password-update/{profile}', 'profile_password')->name('password');
+    });
+
+    Route::controller(TrackController::class)->name('tracks.')->prefix('tracks')->group(function () {
+        Route::post('/update-status/{track}', 'updateStatus')->name('status.update');
+        Route::get('dataTables/list', 'getDataTablesList')->name('dataTables.list');
     });
 
     Route::resource('/artists', ArtistController::class);

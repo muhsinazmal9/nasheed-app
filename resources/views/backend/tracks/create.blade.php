@@ -3,10 +3,8 @@
 @section('title', 'Create Track')
 
 @push('style')
-    {{-- TODO: remove cdn and replace with local --}}
-    <link href="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/css/tom-select.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('assets') }}/js/plugins/select2/css/select2.min.css">
 @endpush
-
 @section('content')
     <div class="bg-body-light">
         <div class="content content-full">
@@ -40,49 +38,81 @@
                     <div class="row">
                         <div class="col-lg-8">
                             <div class="mb-4">
-                                <label for="title" class="form-label">Title</label>
-                                <input type="text" name="title" id="title" class="form-control" required placeholder="Enter track title">
+                                <label for="title" class="form-label">Title <span class="text-danger">*</span></label>
+                                <input type="text" name="title" id="title" class="form-control" required
+                                    placeholder="Enter track title">
+                                    @error('title')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
                             </div>
+
                             <div class="mb-4">
-                                <label for="artist_id" class="form-label">Lyricist</label>
-                                <select name="artist_id" id="artist_id" required>
-                                    <option value="">Select Lyricist</option>
-                                    <!-- Populate with artists -->
-                                    @foreach ($artists as $artist)
-                                        <option value="{{ $artist->id }}">{{ $artist->name }}</option>
-                                    @endforeach
+                                <label for="artist_id" class="form-label">Artists <span class="text-danger">*</span></label>
+                                <select name="artist_id[]" id="artist_id" class="form-select" multiple required>
                                 </select>
+                                @error('artist_id')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
+
+                            <div class="mb-4">
+                                <label for="lyricist_id" class="form-label">Lyricist <span class="text-danger">*</span></label>
+                                <select name="lyricist_id" id="lyricist_id" class="form-select" required>
+                                </select>
+                                @error('lyricist_id')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
+
+                            <div class="mb-4">
+                                <label for="dedication_id" class="form-label">Shan Mubarak <span class="text-danger">*</span></label>
+                                <select name="dedication_id" id="dedication_id" class="form-select">
+                                    <option value="">Select Dedication</option>
+                                </select>
+                                @error('dedication_id')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
+
+                            <div class="mb-4">
+                                <label for="album_id" class="form-label">Album</label>
+                                <select name="album_id" id="album_id" class="form-select">
+                                    <option value="">Select Album</option>
+                                </select>
+                                @error('album_id')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
                             </div>
                             <div class="mb-4">
-                                <label for="album" class="form-label">Album</label>
-                                <input type="text" name="album" id="album" class="form-control" placeholder="Enter album name">
+                                <label for="release_date" class="form-label">Release Date <span class="text-muted fs-sm">(Leave it blank to use current date)</span></label>
+                                <input type="date" name="release_date" id="release_date" class="form-control"
+                                    placeholder="Enter release date">
+                                @error('release_date')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
                             </div>
-                            <input type="hidden" id="total_duration" name="duration" value="0">
                             <div class="mb-4">
-                                <label for="genre" class="form-label">Genre</label>
-                                <input type="text" name="genre" id="genre" class="form-control" placeholder="Enter genre">
+                                <label for="audio_file" class="form-label">Audio File</label>
+                                <input type="file" class="form-control" name="audio_file" id="audio_file"
+                                    accept=".mp3,.wav" required>
+                                @error('audio_file')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
                             </div>
                             <div class="mb-4">
-                                <label for="release_date" class="form-label">Release Date</label>
-                                <input type="date" name="release_date" id="release_date" class="form-control" placeholder="Enter release date">
+                                <label for="audio_play" class="form-label">Audio Play</label>
+                                <audio id="sound" class="form-control" controls></audio>
                             </div>
                         </div>
                         <div class="col-lg-4">
                             <div class="mb-4">
                                 <label for="cover_image" class="form-label">Cover Image</label>
                                 <input type="file" class="form-control" name="cover_image" id="cover_image"
-                                    onchange="document.getElementById('image_preview').src = window.URL.createObjectURL(this.files[0])" placeholder="Enter cover image">
+                                    onchange="document.getElementById('image_preview').src = window.URL.createObjectURL(this.files[0])"
+                                    placeholder="Enter cover image">
                             </div>
                             <div class="mb-4">
-                                <img src="https://placehold.co/400x400" id="image_preview" alt="Cover Image Preview" width="100%">
-                            </div>
-                            <div class="mb-4">
-                                <label for="input" class="form-label">Audio File</label>
-                                <input type="file" class="form-control" name="audio_file" id="input" accept=".mp3,.wav" required >
-                            </div>
-                            <div class="mb-4">
-                                <label for="audio_file" class="form-label">Audio Play</label>
-                                <audio id="sound" class="form-control" controls></audio>
+                                <img src="https://placehold.co/400x400" id="image_preview" alt="preview" width="100%">
                             </div>
                             <div class="mb-4">
                                 <label for="status" class="form-label">Status</label>
@@ -105,24 +135,105 @@
 @endsection
 
 @push('script')
-    <script src="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/js/tom-select.complete.min.js"></script>
+    <script src="{{ asset('assets') }}/js/plugins/select2/js/select2.full.min.js"></script>
+
     <script>
-        new TomSelect('#artist_id', {
-            persist: false,
-            sortField: {
-                field: "text",
-                direction: "asc"
-            },
-            create: false
+        $('#artist_id').select2({
+            placeholder: 'Select Artists',
+            allowClear: true,
+            minimumInputLength: 1,
+            multiple: true,
+            ajax: {
+                url: "{{ route('artists.search') }}",
+                dataType: 'json',
+                type: 'GET',
+                delay: 250,
+                data: function(params) {
+                    return {
+                        q: params.term
+                    };
+                },
+                processResults: function(response) {
+                    return {
+                        results: $.map(response.data, function(item) {
+                            console.log(item);
+                            return {
+                                text: item.name,
+                                id: item.id
+                            }
+                        })
+                    };
+                },
+                cache: true
+            }
+        });
+
+        $('#lyricist_id').select2({
+            placeholder: 'Select Lyricist',
+            allowClear: true,
+            minimumInputLength: 1,
+            ajax: {
+                url: "{{ route('lyricists.search') }}",
+                dataType: 'json',
+                type: 'GET',
+                delay: 250,
+                data: function(params) {
+                    return {
+                        q: params.term
+                    };
+                },
+                processResults: function(response) {
+                    return {
+                        results: $.map(response.data, function(item) {
+                            console.log(item);
+                            return {
+                                text: item.name,
+                                id: item.id
+                            }
+                        })
+                    };
+                },
+                cache: true
+            }
+        });
+
+        $('#dedication_id').select2({
+            placeholder: 'Select Dedication',
+            allowClear: true,
+            minimumInputLength: 1,
+            ajax: {
+                url: "{{ route('dedications.search') }}",
+                dataType: 'json',
+                type: 'GET',
+                delay: 250,
+                data: function(params) {
+                    return {
+                        q: params.term
+                    };
+                },
+                processResults: function(response) {
+                    return {
+                        results: $.map(response.data, function(item) {
+                            console.log(item);
+                            return {
+                                text: item.name,
+                                id: item.id
+                            }
+                        })
+                    };
+                },
+                cache: true
+            }
         });
     </script>
-    <script type="text/javascript">
-        input.onchange = function(e){
-        var sound = document.getElementById('sound');
-        sound.src = URL.createObjectURL(this.files[0]);
-        sound.onend = function(e) {
-            URL.revokeObjectURL(this.src);
-        }
+    <script>
+        const audioFile = document.getElementById('audio_file');
+        audioFile.onchange = function(e) {
+            var sound = document.getElementById('sound');
+            sound.src = URL.createObjectURL(this.files[0]);
+            sound.onend = function(e) {
+                URL.revokeObjectURL(this.src);
+            }
         }
     </script>
 @endpush

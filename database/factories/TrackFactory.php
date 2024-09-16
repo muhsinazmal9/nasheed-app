@@ -22,7 +22,7 @@ class TrackFactory extends Factory
             'lyricist_id' => 1,
             'dedication_id' => 1,
             'slug' => $this->faker->slug(),
-            'cover_image' => $this->faker->imageUrl(240, 240),
+            'cover_image' => "https://placehold.co/240x240",
             'audio_file' => 'uploads/tracks/1.mp3',
             'like_count' => rand(25, 50),
             'views_count' => rand(25, 100),

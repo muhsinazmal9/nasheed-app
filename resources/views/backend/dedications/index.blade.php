@@ -112,7 +112,7 @@
                                             {{ Str::limit($dedication->description, 100) }}
                                         </td>
                                         <td class="fs-sm">
-                                            <img src="{{ asset($dedication->image) }}" alt="" width="50px">
+                                            <img src="{{ $dedication->image ? asset($dedication->image) : '' }}" alt="dedication" loading="lazy" width="50px">
                                         </td>
                                         <td>
                                             <div class="form-check form-switch">

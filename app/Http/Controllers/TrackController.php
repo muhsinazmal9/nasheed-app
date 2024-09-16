@@ -2,13 +2,23 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreTrackRequest;
 use App\Models\Track;
 use App\Models\Artist;
+use App\Models\Lyricist;
+use App\Services\TrackService;
 use Illuminate\Http\Request;
 use Illuminate\Contracts\View\View;
 
+
 class TrackController extends Controller
 {
+
+    public function __construct(private TrackService $trackService)
+    {
+        //
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -22,16 +32,24 @@ class TrackController extends Controller
      */
     public function create(): View
     {
-        $artists = Artist::all();
-        return view('backend.tracks.create', compact('artists'));
+        $artists = Artist::active()->get();
+        $lyricists = Lyricist::active()->get();
+        return view('backend.tracks.create', compact('artists', 'lyricists'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreTrackRequest $request)
     {
-        //
+        $createdTrack = $this->trackService->createTrack($request);
+
+        if ($createdTrack) {
+            return redirect()->route('tracks.index');
+        } else {
+            return redirect()->back()->with('error', 'Track Creation Failed');
+        }
+
     }
 
     /**
@@ -64,5 +82,16 @@ class TrackController extends Controller
     public function destroy(Track $track)
     {
         //
+    }
+
+    public function getDataTablesList(Request $request)
+    {
+        $tracks = $this->trackService->getDataTablesList($request);
+        $data = $tracks->getData()->data;
+        if ($tracks->getData()->success) {
+            return success('Tracks retrieved successfully', $data->data);
+        } else {
+            return error($tracks->getData()->message, $data->data);
+        }
     }
 }

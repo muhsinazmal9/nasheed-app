@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Artist;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -151,5 +152,21 @@ class ArtistController extends Controller
         }
 
         return success('Artist Status Updated Successfully');
+    }
+
+    public function search(Request $request): JsonResponse
+    {
+        $search = $request->q;
+
+        if ($search == '') {
+            return success(data: []);
+        }
+
+        $artists = Artist::where(function ($query) use ($search) {
+            $query->where('name', 'like', "%$search%")
+                ->orWhere('slug', 'like', "%$search%");
+        })->get();
+
+        return success(data: $artists);
     }
 }

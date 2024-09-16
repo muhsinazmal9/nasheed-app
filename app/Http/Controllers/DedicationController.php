@@ -117,4 +117,23 @@ class DedicationController extends Controller
             return error('Error updating dedication status');
         }
     }
+
+    public function search(Request $request): JsonResponse
+    {
+        $search = $request->q;
+
+        $dedications = Dedication::query();
+
+        if ($search == '') {
+            $dedications = $dedications->take(5)->get();
+            return success(data: $dedications);
+        }
+
+        $dedications = $dedications->where(function ($query) use ($search) {
+            $query->where('name', 'like', "%$search%")
+                ->orWhere('slug', 'like', "%$search%");
+        })->get();
+
+        return success(data: $dedications);
+    }
 }
