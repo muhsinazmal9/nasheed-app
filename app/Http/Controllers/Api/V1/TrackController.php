@@ -44,4 +44,16 @@ class TrackController extends Controller
         }
         return success('Track retrieved successfully', new TrackResource($track));
     }
+
+    /**
+     * audioStream
+     */
+    public function audioStream(Track $track_id, $audio_base_name)
+    {
+        if (!$track_id->status) {
+            return error('Track not found', status: 404);
+        }
+        $audio_file = public_path($track_id->audio_file);
+        return response()->file($audio_file);
+    }
 }

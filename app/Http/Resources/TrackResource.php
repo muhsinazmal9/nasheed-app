@@ -21,7 +21,7 @@ class TrackResource extends JsonResource
             'lyricist' => new LyricistResource($this->lyricist),
             'dedication' => new DedicationResource($this->dedication),
             'artists' => ArtistResource::collection($this->artists),
-            'audio_file' => $this->audio_file ? asset($this->audio_file) : null,
+            'audio_file' => $this->audio_base_name ? route('api.tracks.audio-files.stream', ['audio_base_name' => $this->audio_base_name, 'track_id' => $this->id]) : null,
             'cover_image' => $this->cover_image ? asset($this->cover_image) : null,
             'description' => $this->description,
         ];
