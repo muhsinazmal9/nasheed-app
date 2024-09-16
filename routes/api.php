@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\V1\ArtistController;
 use App\Http\Controllers\Api\V1\LyricistController;
 use App\Http\Controllers\Api\V1\DedicationController;
 use App\Http\Controllers\Api\V1\UserController;
+use App\Http\Controllers\Api\V1\AlbumController;
 
 // Authentication related APIs
 Route::post('/login', [AuthController::class, 'login']);
@@ -23,6 +24,7 @@ Route::apiResource('dedications', DedicationController::class)->only(['index', '
 Route::apiResource('artists', ArtistController::class)->only(['index', 'show']);
 Route::apiResource('lyricists', LyricistController::class)->only(['index', 'show']);
 Route::apiResource('tracks', TrackController::class)->only(['index', 'show']);
+Route::apiResource('albums', AlbumController::class)->only(['index', 'show']);
 
 /**
  * Private APIs

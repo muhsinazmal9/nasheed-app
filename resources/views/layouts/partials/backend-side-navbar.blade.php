@@ -31,6 +31,12 @@ $navItems = [
         'active' => Route::is('tracks.*'),
     ],
     [
+        'title' => 'Albums',
+        'url' => route('albums.index'),
+        'icon' => 'nav-main-link-icon si si-speedometer',
+        'active' => Route::is('albums.*'),
+    ],
+    [
         'title' => 'Users',
         'url' => route('users.index'),
         'icon' => 'nav-main-link-icon si si-speedometer',
